@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(cpp-practice VERSION 0.1.0 LANGUAGES C CXX)
 
-add_executable(cpp-practice main.cpp)
+add_executable(cpp-practice matrix_ops.cpp)
 
 include(FetchContent)
 FetchContent_Declare(

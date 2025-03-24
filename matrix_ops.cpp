@@ -1,11 +1,6 @@
 #include <iostream>
-#include <memory>
 #include <sstream>
 #include <vector>
-
-void help() {
-  std::cout << "Hello, from cpp-practice!\n";
-}
 
 /**
  * @brief Simple matrix type
@@ -20,6 +15,7 @@ public:
   std::size_t numel() {
     return fNrows * fNcols;
   }
+
   std::vector<T> &data() {
     return this->fData;
   }
@@ -49,7 +45,7 @@ auto matrix_to_string(T &&matrix, std::size_t nrows, std::size_t ncols) {
   for (std::size_t row = 0; row < nrows; ++row) {
     ress << "\t";
     for (std::size_t col = 0; col < ncols; ++col) {
-      ress << matrix[row * ncols + col] << "\t";
+      ress << matrix[col * nrows + row] << "\t";
     }
     ress << "\n";
   }
@@ -63,6 +59,19 @@ std::string print_size(std::size_t nrows, std::size_t ncols) {
   return res;
 }
 
+/**
+ * @brief Naive implementation of matrix multiplication for column-major
+ * matrices
+ *
+ * @tparam T
+ * @param a
+ * @param anrows
+ * @param ancols
+ * @param b
+ * @param bnrows
+ * @param bncols
+ * @return std::vector<T>
+ */
 template <typename T>
 std::vector<T> matrix_multiply(const std::vector<T> &a, std::size_t anrows,
                                std::size_t ancols, const std::vector<T> &b,
@@ -76,13 +85,13 @@ std::vector<T> matrix_multiply(const std::vector<T> &a, std::size_t anrows,
   }
 
   // Sizes are good. Multiply.
-  for (std::size_t outrow = 0; outrow < outNrows; ++outrow) {
-    for (std::size_t outcol = 0; outcol < outNcols; ++outcol) {
+  for (std::size_t outcol = 0; outcol < outNcols; ++outcol) {
+    for (std::size_t outrow = 0; outrow < outNrows; ++outrow) {
       T val{0};
       for (std::size_t k = 0; k < innerDim; ++k) {
-        val += a[outrow * ancols + k]*b[k*bnrows + outcol];
+        val += a[outrow + k * anrows] * b[k + outcol * bnrows];
       }
-      res[outrow * outNcols + outcol] = val;
+      res[outrow + outcol * outNrows] = val;
     }
   }
   return res;
