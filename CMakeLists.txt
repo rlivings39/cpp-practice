@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(cpp-practice VERSION 0.1.0 LANGUAGES C CXX)
 
-add_executable(cpp-practice matrix_ops.cpp)
+add_library(cpp-practice matrix_ops.cpp)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -15,12 +15,14 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
+# TODO fix this and just link
 add_executable(
   cpp-practice-test
   tests.cpp
 )
 target_link_libraries(
-cpp-practice-test
+  cpp-practice-test
+  cpp-practice
   GTest::gtest_main
 )
 
