@@ -56,6 +56,7 @@ template <typename T> std::shared_ptr<T> get_shared(std::weak_ptr<T> wp) {
   } else {
     std::cout << "Failed to get a reference\n";
   }
+  std::cout << "expired returned: " << std::boolalpha << wp.expired() << "\n";
   return res;
 }
 } // namespace
