@@ -59,6 +59,7 @@ template <typename T> std::shared_ptr<T> get_shared(std::weak_ptr<T> wp) {
   std::cout << "expired returned: " << std::boolalpha << wp.expired() << "\n";
   return res;
 }
+
 } // namespace
 namespace ry {
 
@@ -72,5 +73,19 @@ bool use_weak_ptr() {
   get_shared(wp1);
 
   return true;
+}
+
+RefCounter::RefCounter() {}
+
+RefCounter &RefCounter::operator=(RefCounter &other) {
+  this->fLvalueCount = other.fLvalueCount + 1;
+  this->fRvalueCount = other.fRvalueCount;
+  return *this;
+}
+
+RefCounter &RefCounter::operator=(RefCounter &&other) {
+  this->fLvalueCount = other.fLvalueCount;
+  this->fRvalueCount = other.fRvalueCount + 1;
+  return *this;
 }
 } // namespace ry

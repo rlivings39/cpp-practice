@@ -19,3 +19,18 @@ TEST(MatrixMultiply, SquareIdentity) {
 TEST(ModernCpp, WeakPtr) {
   ASSERT_TRUE(ry::use_weak_ptr());
 }
+
+TEST(ModernCpp, MoveAssign) {
+  ry::RefCounter rc1, rc2;
+  ASSERT_EQ(rc1.fLvalueCount, 0);
+  ASSERT_EQ(rc1.fRvalueCount, 0);
+  rc2 = rc1;
+  ASSERT_EQ(rc2.fLvalueCount, 1);
+  ASSERT_EQ(rc2.fRvalueCount, 0);
+  rc2 = std::move(rc1);
+  ASSERT_EQ(rc2.fLvalueCount, 0);
+  ASSERT_EQ(rc2.fRvalueCount, 1);
+  rc2 = ry::RefCounter();
+  ASSERT_EQ(rc2.fLvalueCount, 0);
+  ASSERT_EQ(rc2.fRvalueCount, 1);
+}
