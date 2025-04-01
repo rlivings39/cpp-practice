@@ -77,6 +77,13 @@ bool use_weak_ptr() {
 
 RefCounter::RefCounter() {}
 
+RefCounter::RefCounter(const RefCounter &other)
+    : fLvalueCount(other.fLvalueCount + 1), fRvalueCount(other.fRvalueCount) {}
+
+RefCounter::RefCounter(RefCounter &&other)
+    : fLvalueCount(other.fLvalueCount), fRvalueCount(other.fRvalueCount + 1) {
+}
+
 RefCounter &RefCounter::operator=(RefCounter &other) {
   this->fLvalueCount = other.fLvalueCount + 1;
   this->fRvalueCount = other.fRvalueCount;

@@ -33,4 +33,19 @@ TEST(ModernCpp, MoveAssign) {
   rc2 = ry::RefCounter();
   ASSERT_EQ(rc2.fLvalueCount, 0);
   ASSERT_EQ(rc2.fRvalueCount, 1);
+
+  ry::RefCounter rc3(rc1);
+  ASSERT_EQ(rc3.fLvalueCount, 1);
+  ASSERT_EQ(rc3.fRvalueCount, 0);
+
+  // This does NOT call move c'tor because of copy elision
+  ry::RefCounter rc4(ry::RefCounter{});
+  ASSERT_EQ(rc4.fLvalueCount, 0);
+  ASSERT_EQ(rc4.fRvalueCount, 0);
+
+  // Actually moves and calls move c'tor
+  ry::RefCounter rc5(std::move(rc1));
+  ASSERT_EQ(rc5.fLvalueCount, 0);
+  ASSERT_EQ(rc5.fRvalueCount, 1);
+
 }

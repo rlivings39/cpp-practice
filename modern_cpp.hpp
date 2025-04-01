@@ -7,6 +7,8 @@ struct RefCounter {
     int fRvalueCount = 0;
     RefCounter();
 
+    RefCounter(const RefCounter & other);
+    RefCounter(RefCounter && other);
     RefCounter &operator=(RefCounter &other);
 
     RefCounter &operator=(RefCounter &&other);
