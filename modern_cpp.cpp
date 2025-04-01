@@ -1,7 +1,8 @@
 /**
  * Topics to cover:
  *
- * [] Smart pointers, especially weak_ptr and using in graphs/cycles
+ * [x] Smart pointers, especially weak_ptr
+ * [] Smart pointers in graphs/cycles
  * [] r-value references, universal references
  * [] Argument packs/variadiac templates, fold expressions. Make a tuple
  * [] Private, virtual, etc. inheritance
@@ -11,7 +12,8 @@
  * [] Basic ranges
  * [] Lambdas w/ captures
  * [] Threading and parallelism, thread pools, condition vars, atomics
- *   Useful https://stackoverflow.com/questions/3513045/conditional-variable-vs-semaphore
+ *   Useful
+ * https://stackoverflow.com/questions/3513045/conditional-variable-vs-semaphore
  * [] Locks, mutexes, semaphores
  * [] Using override, default, delete, const on methods
  * [] C'tors, assignment, d'tors (copy and move)
@@ -22,7 +24,8 @@
  * [] Generic lambdas
  * [] if-init: if(auto it = map.find(key); it != map.end()) { use(it); }
  * [] Structured binding declarations
- * [] Inline variables for single definition of globals and class statics in headers
+ * [] Inline variables for single definition of globals and class statics in
+ * headers
  * [] if constexpr
  * [] Improved lambda to capture with [x = std::move(obj)] { use(x); }
  * [] std::filesystem
@@ -41,4 +44,32 @@
  *
  */
 
- #include "modern_cpp.hpp"
+#include "modern_cpp.hpp"
+#include <iostream>
+#include <memory>
+
+namespace {
+template <typename T> std::shared_ptr<T> get_shared(std::weak_ptr<T> wp) {
+  auto res = wp.lock();
+  if (res) {
+    std::cout << "Got a reference\n";
+  } else {
+    std::cout << "Failed to get a reference\n";
+  }
+  return res;
+}
+} // namespace
+namespace ry {
+
+bool use_weak_ptr() {
+  std::weak_ptr<int> wp1;
+  {
+    std::shared_ptr<int> sp1 = std::make_shared<int>(42);
+    wp1 = sp1;
+    get_shared(wp1);
+  }
+  get_shared(wp1);
+
+  return true;
+}
+} // namespace ry

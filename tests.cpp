@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "matrix_ops.hpp"
+#include "modern_cpp.hpp"
 
 #define ASSERT_EQ_MATRIX(a, b, nrows, ncols)                                   \
   ASSERT_EQ(a, b) << "Mismatch: \n\n"                                          \
@@ -13,4 +14,8 @@ TEST(MatrixMultiply, SquareIdentity) {
   std::vector<double> b = {1, 0, 0, 1};
   auto c = matrix_multiply(a, 2, 2, b, 2, 2);
   ASSERT_EQ_MATRIX(c, a, 2, 2);
+}
+
+TEST(ModernCpp, WeakPtr) {
+  ASSERT_TRUE(ry::use_weak_ptr());
 }
