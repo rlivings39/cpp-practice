@@ -3,22 +3,23 @@
  *
  * [x] Smart pointers, especially weak_ptr
  * [] Smart pointers in graphs/cycles
- * [] r-value references, universal references
- * [] Argument packs/variadiac templates, fold expressions. Make a tuple
+ * [x] r-value references, universal references
  * [] Private, virtual, etc. inheritance
  * [] Rule of 0,3,5
  * [] Do some operator overloading
  * [] Option and variant
- * [] Basic ranges
  * [] Lambdas w/ captures
  * [] Threading and parallelism, thread pools, condition vars, atomics
- *   Useful
- * https://stackoverflow.com/questions/3513045/conditional-variable-vs-semaphore
+ *   Useful https://stackoverflow.com/questions/3513045/conditional-variable-vs-semaphore
  * [] Locks, mutexes, semaphores
  * [] Using override, default, delete, const on methods
  * [] C'tors, assignment, d'tors (copy and move)
  * [] auto, decltype auto, std::decay, etc.
  * [] Initializer lists, uniform initialization
+ * [] Argument packs/variadiac templates, fold expressions. Make a tuple
+ *  https://en.cppreference.com/w/cpp/language/pack has a lot of good detail. Crazy complicated.
+ *  https://en.cppreference.com/w/cpp/language/fold
+ * [] Basic ranges
  * [] ADL
  * [] Variable templates
  * [] Generic lambdas
