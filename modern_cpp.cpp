@@ -95,4 +95,8 @@ RefCounter &RefCounter::operator=(RefCounter &&other) {
   this->fRvalueCount = other.fRvalueCount + 1;
   return *this;
 }
+
+ForwardingRefDetector::ForwardingRefDetector(const int &x) : fWasRvalue(false) {}
+ForwardingRefDetector::ForwardingRefDetector(int &&x) : fWasRvalue(true) {}
+
 } // namespace ry
