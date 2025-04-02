@@ -1,3 +1,4 @@
+// clang-format off
 /**
  * Topics to cover:
  *
@@ -44,7 +45,8 @@
  * https://en.cppreference.com/w/cpp/17
  * https://en.cppreference.com/w/cpp/20
  *
- */
+*/
+// clang-format on
 
 #include "modern_cpp.hpp"
 #include <iostream>
@@ -83,8 +85,7 @@ RefCounter::RefCounter(const RefCounter &other)
     : fLvalueCount(other.fLvalueCount + 1), fRvalueCount(other.fRvalueCount) {}
 
 RefCounter::RefCounter(RefCounter &&other)
-    : fLvalueCount(other.fLvalueCount), fRvalueCount(other.fRvalueCount + 1) {
-}
+    : fLvalueCount(other.fLvalueCount), fRvalueCount(other.fRvalueCount + 1) {}
 
 RefCounter &RefCounter::operator=(RefCounter &other) {
   this->fLvalueCount = other.fLvalueCount + 1;
@@ -98,7 +99,8 @@ RefCounter &RefCounter::operator=(RefCounter &&other) {
   return *this;
 }
 
-ForwardingRefDetector::ForwardingRefDetector(const int &x) : fWasRvalue(false) {}
+ForwardingRefDetector::ForwardingRefDetector(const int &x)
+    : fWasRvalue(false) {}
 ForwardingRefDetector::ForwardingRefDetector(int &&x) : fWasRvalue(true) {}
 
 } // namespace ry

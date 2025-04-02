@@ -21,15 +21,13 @@ struct ForwardingRefDetector {
   explicit ForwardingRefDetector(int &&x);
 };
 
-template<typename T>
-ForwardingRefDetector do_forward(T &&x) {
-    ForwardingRefDetector res{std::forward<T>(x)};
-    return res;
+template <typename T> ForwardingRefDetector do_forward(T &&x) {
+  ForwardingRefDetector res{std::forward<T>(x)};
+  return res;
 }
 
-template<typename T>
-ForwardingRefDetector do_not_forward(T &&x) {
-    ForwardingRefDetector res{x};
-    return res;
+template <typename T> ForwardingRefDetector do_not_forward(T &&x) {
+  ForwardingRefDetector res{x};
+  return res;
 }
 } // namespace ry
