@@ -30,13 +30,13 @@ The unit test file [tests.cpp](tests.cpp) is a great place to start reading. It 
  * [ ] ADL
  * [ ] Variable templates
  * [ ] Generic lambdas
- * [ ] if-init: if(auto it = map.find(key); it != map.end()) { use(it); }
+ * [ ] if-init: `if(auto it = map.find(key); it != map.end()) { use(it); }`
  * [ ] Structured binding declarations
  * [ ] Inline variables for single definition of globals and class statics in headers
- * [ ] if constexpr
- * [ ] Improved lambda to capture with [x = std::move(obj)] { use(x); }
+ * [ ] `if constexpr`
+ * [ ] Improved lambda to capture with `[x = std::move(obj)] { use(x); }`
  * [ ] std::filesystem
- * [ ] <string_view>, <any>, <optional>, <variant>, <memory_resource>
+ * [ ] `<string_view>, <any>, <optional>, <variant>, <memory_resource>`
   * C++ 20
  * [ ] concepts
  * [ ] ranges
