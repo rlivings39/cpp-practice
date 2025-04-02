@@ -241,3 +241,88 @@ TEST(ModernCpp, VirtualInheritance) {
   ASSERT_EQ(&r.DerivedV1::x, &r.DerivedV2::x);
   ASSERT_NE(&r.DerivedV1::x, &r.DerivedNonV::x);
 }
+
+struct rule_of_5 {
+  int *x;
+  rule_of_5(int val) {
+    x = new int(val);
+  }
+  rule_of_5(const rule_of_5 &other) : rule_of_5(*other.x) {}
+  rule_of_5(rule_of_5 &&other) noexcept : x(std::exchange(other.x, nullptr)) {}
+  rule_of_5 &operator=(const rule_of_5 &other) {
+    // Copy and move assign from other to avoid storage reuse
+    *this = rule_of_5(other);
+    return *this;
+  }
+  rule_of_5 &operator=(rule_of_5 &&other) {
+    // Copy and swap to avoid storage reuse
+    rule_of_5 tmp(other);
+    std::swap(tmp.x, this->x);
+    return *this;
+  }
+  ~rule_of_5() {
+    delete x;
+  };
+};
+
+TEST(ModernCpp, RuleOf5) {
+  {
+    rule_of_5 r(42);
+    ASSERT_NE(r.x, nullptr);
+    ASSERT_EQ(*r.x, 42);
+
+    // Copy construct and ensure things are appropriate. Also trigger d'tor to
+    // ensure no crashes.
+    {
+      rule_of_5 rcopy(r);
+      ASSERT_NE(rcopy.x, nullptr);
+      ASSERT_NE(rcopy.x, r.x);
+      ASSERT_EQ(*rcopy.x, 42);
+    }
+    // Copy assign and determine the same
+    {
+      rule_of_5 rcopy = r;
+      ASSERT_NE(rcopy.x, nullptr);
+      ASSERT_NE(rcopy.x, r.x);
+      ASSERT_EQ(*rcopy.x, 42);
+    }
+    // Move construct and ensure things work properly
+    {
+      rule_of_5 rnew(42);
+      rule_of_5 rcopy(std::move(rnew));
+      ASSERT_NE(rcopy.x, nullptr);
+      ASSERT_EQ(rnew.x, nullptr);
+      ASSERT_NE(rcopy.x, rnew.x);
+      ASSERT_EQ(*rcopy.x, 42);
+    }
+    // Move assign and ensure things work properly
+    {
+      rule_of_5 rnew(42);
+      rule_of_5 rcopy = std::move(rnew);
+      ASSERT_NE(rcopy.x, nullptr);
+      ASSERT_EQ(rnew.x, nullptr);
+      ASSERT_NE(rcopy.x, rnew.x);
+      ASSERT_EQ(*rcopy.x, 42);
+    }
+  }
+  // Now check self assignment
+  {
+    rule_of_5 r1(42);
+    int *xorig = r1.x;
+    ASSERT_EQ(*r1.x, 42);
+    r1 = r1;
+    ASSERT_EQ(*r1.x, 42);
+    // Note: this implementation does change memory after assignment
+    ASSERT_NE(r1.x, xorig);
+  }
+  // Now check self move assignment
+  {
+    rule_of_5 r1(42);
+    int *xorig = r1.x;
+    ASSERT_EQ(*r1.x, 42);
+    r1 = std::move(r1);
+    ASSERT_EQ(*r1.x, 42);
+    // Note: this implementation does change memory after assignment
+    ASSERT_NE(r1.x, xorig);
+  }
+}

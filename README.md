@@ -17,7 +17,7 @@ Topics to cover:
 * [ ] Smart pointers in graphs/cycles
 * [x] r-value references, universal references
 * [x] Private, virtual, etc. inheritance
-* [ ] Rule of 0,3,5 https://en.cppreference.com/w/cpp/language/rule_of_three
+* [x] Rule of 0,3,5 https://en.cppreference.com/w/cpp/language/rule_of_three
 * [ ] Do some operator overloading
 * [x] Optional and variant
 * [ ] Lambdas w/ captures
