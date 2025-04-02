@@ -23,7 +23,7 @@ Topics to cover:
 * [ ] Locks, mutexes, semaphores
 * [x] Optional and variant
 * [x] Lambdas w/ captures and init-capture `[x = std::move(obj)] { use(x); }`
-* [ ] Using override, default, delete, const on methods
+* [x] Using override, default, delete, const on methods
 * [ ] C'tors, assignment, d'tors (copy and move)
 * [ ] auto, decltype auto, std::decay, etc.
 * [ ] Initializer lists, uniform initialization

@@ -4,6 +4,7 @@
 #include "matrix_ops.hpp"
 #include "modern_cpp.hpp"
 #include <optional>
+#include <string>
 #include <type_traits>
 #include <variant>
 
@@ -336,4 +337,29 @@ TEST(ModernCpp, Lambdas) {
   };
   ASSERT_EQ(f(12), 54);
   ASSERT_EQ(val2, 45);
+}
+
+namespace {
+struct vbase {
+  vbase() = default;
+  vbase(const vbase &) = delete;
+  vbase &operator=(const vbase &) = delete;
+  virtual std::string name() const {
+    return "vbase";
+  }
+};
+
+struct vderived : public vbase {
+  std::string name() const override {
+    return "vderived";
+  }
+};
+} // namespace
+
+TEST(ModernCpp, OverrideDeleteDefault) {
+  auto f = [](vbase *v) { return v->name(); };
+  vbase vb;
+  vderived vd;
+  ASSERT_EQ(f(&vb), "vbase");
+  ASSERT_EQ(f(&vd), "vderived");
 }
