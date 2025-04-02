@@ -2,6 +2,7 @@
 
 #include "matrix_ops.hpp"
 #include "modern_cpp.hpp"
+#include <optional>
 
 #define ASSERT_EQ_MATRIX(a, b, nrows, ncols)                                   \
   ASSERT_EQ(a, b) << "Mismatch: \n\n"                                          \
@@ -55,7 +56,6 @@ TEST(ModernCpp, MoveAssign) {
   ry::RefCounter rc5(std::move(rc1));
   ASSERT_EQ(rc5.fLvalueCount, 0);
   ASSERT_EQ(rc5.fRvalueCount, 1);
-
 }
 
 TEST(ModernCpp, Forwarding) {
@@ -83,3 +83,29 @@ TEST(ModernCpp, Forwarding) {
   ASSERT_EQ(fr6.fWasRvalue, false);
 }
 
+// Helper to test optional
+std::optional<std::string> maybe_create(bool b) {
+  if (b) {
+    return "created";
+  }
+  return std::nullopt;
+}
+
+TEST(ModernCpp, Optional) {
+  std::optional<std::string> o;
+  ASSERT_FALSE(o);
+
+  o = maybe_create(false);
+  ASSERT_FALSE(o);
+  ASSERT_FALSE(o.has_value());
+  ASSERT_EQ(o.value_or("not created"), "not created");
+  // *o and o-> are undefined here
+
+  o = maybe_create(true);
+  ASSERT_TRUE(o);
+  ASSERT_TRUE(o.has_value());
+  ASSERT_EQ(o.value(), "created");
+  ASSERT_EQ(o.value_or("asdf"), "created");
+  ASSERT_EQ(*o, "created");
+  ASSERT_STREQ(o->c_str(), "created");
+}
