@@ -1,5 +1,6 @@
-#include <utility>
 #pragma "once"
+
+#include <utility>
 
 namespace ry {
 bool use_weak_ptr();

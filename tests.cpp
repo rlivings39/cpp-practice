@@ -3,6 +3,7 @@
 #include "matrix_ops.hpp"
 #include "modern_cpp.hpp"
 #include <optional>
+#include <variant>
 
 #define ASSERT_EQ_MATRIX(a, b, nrows, ncols)                                   \
   ASSERT_EQ(a, b) << "Mismatch: \n\n"                                          \
@@ -109,4 +110,13 @@ TEST(ModernCpp, Optional) {
   ASSERT_EQ(o.value_or("asdf"), "created");
   ASSERT_EQ(*o, "created");
   ASSERT_STREQ(o->c_str(), "created");
+}
+
+using string_or_int_t = std::variant<std::string, int>;
+
+TEST(ModernCpp, Variant) {
+  string_or_int_t s{"hello"};
+  ASSERT_EQ(s.index(), 0);
+  ASSERT_TRUE(std::holds_alternative<std::string>(s));
+  ASSERT_FALSE(std::holds_alternative<int>(s));
 }
