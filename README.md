@@ -16,7 +16,7 @@ Topics to cover:
 * [x] Smart pointers, especially weak_ptr
 * [ ] Smart pointers in graphs/cycles
 * [x] r-value references, universal references
-* [ ] Private, virtual, etc. inheritance
+* [x] Private, virtual, etc. inheritance
 * [ ] Rule of 0,3,5 https://en.cppreference.com/w/cpp/language/rule_of_three
 * [ ] Do some operator overloading
 * [x] Optional and variant

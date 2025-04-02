@@ -201,3 +201,43 @@ TEST(ModernCpp, Variant) {
   ASSERT_EQ(std::get<1>(v[0]), 2);
   ASSERT_EQ(std::get<0>(v[1]), "hellohello");
 }
+
+/**
+ * @brief Demonstrate virtual inheritance
+ *
+ */
+struct Base {
+  int x = 0;
+};
+// DerivedV1/2 share one instance of x
+struct DerivedV1 : public virtual Base {};
+struct DerivedV2 : virtual public Base {};
+// DerivedNonV has its own instance of x
+struct DerivedNonV : public Base {};
+struct RollUp : public DerivedV1, DerivedV2, DerivedNonV {
+  void incrementXs() {
+    DerivedV1::x++;
+    DerivedV2::x++;
+    DerivedNonV::x++;
+  }
+
+  auto getXs() {
+    return std::make_tuple(DerivedV1::x, DerivedV2::x, DerivedNonV::x);
+  }
+};
+
+TEST(ModernCpp, VirtualInheritance) {
+  RollUp r;
+  auto [x1, x2, x3] = r.getXs();
+  ASSERT_EQ(x1, 0);
+  ASSERT_EQ(x2, 0);
+  ASSERT_EQ(x3, 0);
+
+  r.incrementXs();
+  ASSERT_EQ(r.getXs(), std::make_tuple(2, 2, 1));
+  // Here's how to disambiguate a member...Also verify that the memory locations
+  // are as expected
+  ASSERT_EQ(r.DerivedV1::x, 2);
+  ASSERT_EQ(&r.DerivedV1::x, &r.DerivedV2::x);
+  ASSERT_NE(&r.DerivedV1::x, &r.DerivedNonV::x);
+}
