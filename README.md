@@ -1,6 +1,11 @@
 # cpp-practice
 
-Some exercises for me to shake off the C++ cobwebs. Generally build with CMake and run the tests in `./build/cpp-practice-test` to see if things are working right.
+Some exercises for me to shake off the C++ cobwebs. Generally build with CMake
+
+```bash
+cmake --build ./build --config Debug --target all
+```
+and run the tests in `./build/cpp-practice-test` to see if things are working right.
 
 The unit test file [tests.cpp](tests.cpp) is a great place to start reading. It covers a matrix multiplication algorithm as well as review on modern C++ features.
 

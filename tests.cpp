@@ -17,6 +17,7 @@ TEST(MatrixMultiply, SquareIdentity) {
   ASSERT_EQ_MATRIX(c, a, 2, 2);
 }
 
+// C++11/14/17/20 feature review
 TEST(ModernCpp, WeakPtr) {
   ASSERT_TRUE(ry::use_weak_ptr());
 }
