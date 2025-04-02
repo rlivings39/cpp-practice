@@ -1,8 +1,10 @@
+#include <algorithm>
 #include <gtest/gtest.h>
 
 #include "matrix_ops.hpp"
 #include "modern_cpp.hpp"
 #include <optional>
+#include <type_traits>
 #include <variant>
 
 #define ASSERT_EQ_MATRIX(a, b, nrows, ncols)                                   \
@@ -114,9 +116,88 @@ TEST(ModernCpp, Optional) {
 
 using string_or_int_t = std::variant<std::string, int>;
 
+namespace {
+/**
+ * @brief Helper class to make an overload set: overloaded([](){}, [](){}, ...)
+ *
+ * @tparam Ts
+ */
+template <class... Ts> struct overloaded : Ts... {
+  using Ts::operator()...;
+};
+// explicit deduction guide (not needed as of C++20)
+template <class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
+/**
+ * @brief Demonstrates using constexpr if for a variant visitor
+ *
+ * @tparam InT
+ * @param var
+ * @return std::string
+ */
+template <typename InT> std::string constexpr_if_overload(InT &&var) {
+  using T = std::decay_t<decltype(var)>;
+  if constexpr (std::is_same_v<T, std::string>) {
+    return "string";
+  } else if constexpr (std::is_same_v<T, int>) {
+    return "int";
+  } else {
+    static_assert(false, "Incomplete visitor");
+  }
+}
+} // namespace
+
 TEST(ModernCpp, Variant) {
-  string_or_int_t s{"hello"};
-  ASSERT_EQ(s.index(), 0);
-  ASSERT_TRUE(std::holds_alternative<std::string>(s));
-  ASSERT_FALSE(std::holds_alternative<int>(s));
+  string_or_int_t var{"hello"};
+  ASSERT_EQ(var.index(), 0);
+  ASSERT_TRUE(std::holds_alternative<std::string>(var));
+  ASSERT_FALSE(std::holds_alternative<int>(var));
+  ASSERT_EQ(std::get<0>(var), "hello");
+  std::string *str = std::get_if<std::string>(&var);
+  ASSERT_NE(str, nullptr);
+  int *i = std::get_if<int>(&var);
+  ASSERT_EQ(i, nullptr);
+  ASSERT_EQ(*str, "hello");
+  ASSERT_THROW(std::get<1>(var), std::bad_variant_access);
+  ASSERT_EQ(std::variant_size_v<string_or_int_t>, 2);
+
+  // Visitation doc https://en.cppreference.com/w/cpp/utility/variant/visit2
+
+  // Visit using a class with N operator() overloads
+  auto variant_visitor = overloaded{[](std::string) { return "string"; },
+                                    [](int) { return "int"; }};
+  ASSERT_EQ(std::visit(variant_visitor, var), "string");
+
+  // Visit doing dispatch with if constexpr
+  ASSERT_EQ(
+      std::visit([](auto &&val) { return constexpr_if_overload(val); }, var),
+      "string");
+
+  var = 42;
+  ASSERT_EQ(var.index(), 1);
+  ASSERT_FALSE(std::holds_alternative<std::string>(var));
+  ASSERT_TRUE(std::holds_alternative<int>(var));
+  ASSERT_EQ(std::get<1>(var), 42);
+  str = std::get_if<std::string>(&var);
+  ASSERT_EQ(str, nullptr);
+  i = std::get_if<int>(&var);
+  ASSERT_EQ(*i, 42);
+  ASSERT_THROW(std::get<0>(var), std::bad_variant_access);
+
+  // Visit using a class with N operator() overloads
+  ASSERT_EQ(std::visit(variant_visitor, var), "int");
+
+  // Visit doing dispatch with if constexpr
+  ASSERT_EQ(
+      std::visit([](auto &&val) { return constexpr_if_overload(val); }, var),
+      "int");
+
+  // Visit with a visitor that returns the visitor type to transform a vector
+  std::vector<string_or_int_t> v{1, "hello"};
+  std::transform(std::begin(v), std::end(v), std::begin(v), [](auto &&v) {
+    return std::visit([](auto &&arg) -> string_or_int_t { return arg + arg; },
+                      v);
+  });
+  ASSERT_EQ(std::get<1>(v[0]), 2);
+  ASSERT_EQ(std::get<0>(v[1]), "hellohello");
 }

@@ -19,7 +19,7 @@ The unit test file [tests.cpp](tests.cpp) is a great place to start reading. It 
  * [ ] Private, virtual, etc. inheritance
  * [ ] Rule of 0,3,5 https://en.cppreference.com/w/cpp/language/rule_of_three
  * [ ] Do some operator overloading
- * [ ] Optional and variant
+ * [x] Optional and variant
  * [ ] Lambdas w/ captures
  * [ ] Threading and parallelism, thread pools, condition vars, atomics
    * Useful https://stackoverflow.com/questions/3513045/conditional-variable-vs-semaphore
