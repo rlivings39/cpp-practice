@@ -17,7 +17,6 @@ Topics to cover:
 * [x] r-value references, universal references
 * [x] Private, virtual, etc. inheritance
 * [x] Rule of 0,3,5 https://en.cppreference.com/w/cpp/language/rule_of_three
-* [ ] Smart pointers in graphs/cycles
 * [ ] Do some operator overloading
 * [ ] Threading and parallelism, thread pools, condition vars, atomics
     * Useful https://stackoverflow.com/questions/3513045/conditional-variable-vs-semaphore
@@ -31,6 +30,7 @@ Topics to cover:
 * [ ] Argument packs/variadiac templates, fold expressions. Make a tuple
     * https://en.cppreference.com/w/cpp/language/pack has a lot of good detail. Crazy complicated.
     * https://en.cppreference.com/w/cpp/language/fold
+* [ ] Smart pointers in graphs/cycles
 * [ ] Basic ranges
 * [ ] ADL
 * [ ] Variable templates
