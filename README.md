@@ -14,23 +14,23 @@ The unit test file [tests.cpp](tests.cpp) is a great place to start reading. It 
 Topics to cover:
 
 * [x] Smart pointers, especially weak_ptr
-* [ ] Smart pointers in graphs/cycles
 * [x] r-value references, universal references
 * [x] Private, virtual, etc. inheritance
 * [x] Rule of 0,3,5 https://en.cppreference.com/w/cpp/language/rule_of_three
+* [ ] Smart pointers in graphs/cycles
 * [ ] Do some operator overloading
+* [ ] Threading and parallelism, thread pools, condition vars, atomics
+    * Useful https://stackoverflow.com/questions/3513045/conditional-variable-vs-semaphore
+* [ ] Locks, mutexes, semaphores
 * [x] Optional and variant
 * [x] Lambdas w/ captures and init-capture `[x = std::move(obj)] { use(x); }`
-* [ ] Threading and parallelism, thread pools, condition vars, atomics
-* Useful https://stackoverflow.com/questions/3513045/conditional-variable-vs-semaphore
-* [ ] Locks, mutexes, semaphores
 * [ ] Using override, default, delete, const on methods
 * [ ] C'tors, assignment, d'tors (copy and move)
 * [ ] auto, decltype auto, std::decay, etc.
 * [ ] Initializer lists, uniform initialization
 * [ ] Argument packs/variadiac templates, fold expressions. Make a tuple
-* https://en.cppreference.com/w/cpp/language/pack has a lot of good detail. Crazy complicated.
-* https://en.cppreference.com/w/cpp/language/fold
+    * https://en.cppreference.com/w/cpp/language/pack has a lot of good detail. Crazy complicated.
+    * https://en.cppreference.com/w/cpp/language/fold
 * [ ] Basic ranges
 * [ ] ADL
 * [ ] Variable templates
@@ -46,6 +46,9 @@ Topics to cover:
 * [ ] ranges
 * [ ] coroutines
 * [ ] constexpr and consteval
+
+General standard version references
+
 * https://en.cppreference.com/w/cpp/11
 * https://en.cppreference.com/w/cpp/14
 * https://en.cppreference.com/w/cpp/17
