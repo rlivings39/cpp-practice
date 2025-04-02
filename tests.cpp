@@ -326,3 +326,14 @@ TEST(ModernCpp, RuleOf5) {
     ASSERT_NE(r1.x, xorig);
   }
 }
+
+TEST(ModernCpp, Lambdas) {
+  int val{42}, val2{44};
+  // Renaming capture in lambda by value and by reference
+  auto f = [y = val, &z = val2](int arg) {
+    ++z;
+    return arg + y;
+  };
+  ASSERT_EQ(f(12), 54);
+  ASSERT_EQ(val2, 45);
+}

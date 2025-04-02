@@ -20,7 +20,7 @@ Topics to cover:
 * [x] Rule of 0,3,5 https://en.cppreference.com/w/cpp/language/rule_of_three
 * [ ] Do some operator overloading
 * [x] Optional and variant
-* [ ] Lambdas w/ captures
+* [x] Lambdas w/ captures and init-capture `[x = std::move(obj)] { use(x); }`
 * [ ] Threading and parallelism, thread pools, condition vars, atomics
 * Useful https://stackoverflow.com/questions/3513045/conditional-variable-vs-semaphore
 * [ ] Locks, mutexes, semaphores
@@ -39,7 +39,6 @@ Topics to cover:
 * [ ] Structured binding declarations
 * [ ] Inline variables for single definition of globals and class statics in headers
 * [ ] `if constexpr`
-* [ ] Improved lambda to capture with `[x = std::move(obj)] { use(x); }`
 * [ ] std::filesystem
 * [ ] `<string_view>, <any>, <optional>, <variant>, <memory_resource>`
 * C++ 20
