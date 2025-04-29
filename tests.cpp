@@ -119,7 +119,8 @@ using string_or_int_t = std::variant<std::string, int>;
 
 namespace {
 /**
- * @brief Helper class to make an overload set: overloaded([](){}, [](){}, ...)
+ * @brief Helper class to make an overload set: overloaded([](){}, callable1,
+ * ...). Works with any non-final class having an operator().
  *
  * @tparam Ts
  */
@@ -362,4 +363,42 @@ TEST(ModernCpp, OverrideDeleteDefault) {
   vderived vd;
   ASSERT_EQ(f(&vb), "vbase");
   ASSERT_EQ(f(&vd), "vderived");
+}
+
+namespace {
+template <typename... TRest> struct RyTuple {};
+
+template <typename THead, typename... TRest>
+struct RyTuple<THead, TRest...> : RyTuple<TRest...> {
+  RyTuple(THead head, TRest... rest)
+      : RyTuple<TRest...>(rest...), fHead(head) {}
+
+private:
+  THead fHead;
+};
+
+template <std::size_t, typename> struct RyTupleElement;
+
+template <typename T, typename... TRest>
+struct RyTupleElement<0, RyTuple<T, TRest...>> {
+  using type = T;
+};
+
+template <std::size_t i, typename T, typename... TRest>
+struct RyTupleElement<i, RyTuple<T, TRest...>> {
+  using type = RyTupleElement<i-1, RyTuple<TRest...>>::type;
+};
+
+template<std::size_t i, typename T, typename... Ts> auto get_impl(RyTupleElement<i, RyTuple<T, Ts...>> &t) {
+  if constexpr(i == 0) {
+
+  }
+}
+
+} // namespace
+
+TEST(ModernCpp, VariadicTemplate) {
+  auto rt = RyTuple<int, std::string>(1, "hi");
+  auto t = std::make_tuple(1, std::string("hello"));
+  std::get<0>(t);
 }
