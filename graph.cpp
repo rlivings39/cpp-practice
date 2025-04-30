@@ -1,6 +1,7 @@
 #include "graph.hpp"
 #include <algorithm>
 #include <iterator>
+#include <string>
 
 /**
  * Algorithms to review / practice
@@ -48,11 +49,11 @@ std::vector<nodeId_t> AdjacencyListGraph::getNodes() const {
 }
 
 auto maybe_add_node(AdjacencyListGraph::AdjacencyList_t &map, nodeId_t node) {
-    return map.emplace(node, 0).first;
+  return map.emplace(node, 0).first;
 }
 
 void AdjacencyListGraph::add_node(nodeId_t node) {
-    maybe_add_node(fAdjacencyList, node);
+  maybe_add_node(fAdjacencyList, node);
 }
 
 bool AdjacencyListGraph::isAdjacent(nodeId_t src, nodeId_t dest) const {
@@ -60,21 +61,42 @@ bool AdjacencyListGraph::isAdjacent(nodeId_t src, nodeId_t dest) const {
   if (it == std::end(fAdjacencyList)) {
     return false;
   }
-  auto &adjList = it->second;
-  return std::find(std::begin(adjList), std::end(adjList), dest) !=
-         std::end(adjList);
+  return it->second.contains(dest);
 }
 
 std::vector<nodeId_t> AdjacencyListGraph::getNeighbors(nodeId_t node) const {
-  return {};
+  auto it = fAdjacencyList.find(node);
+  if (it == std::end(fAdjacencyList)) {
+    return {};
+  }
+  std::vector<nodeId_t> res(it->second.begin(), it->second.end());
+  std::sort(res.begin(), res.end());
+  return res;
 }
 
-void AdjacencyListGraph::remove_vertex(nodeId_t node) {}
+void AdjacencyListGraph::remove_node(nodeId_t node) {
+    auto it = fAdjacencyList.find(node);
+    if (it == fAdjacencyList.end()) {
+        return;
+    }
+    fAdjacencyList.erase(node);
+    for (auto &[_, edgeSet] : fAdjacencyList) {
+        edgeSet.erase(node);
+    }
+}
 
+auto checked_node_find(AdjacencyListGraph::AdjacencyList_t &l, nodeId_t node) {
+    auto it = l.find(node);
+    if (it == std::end(l)) {
+      throw new InvalidNodeIdError("Non-existent node: " + std::to_string(node));
+    }
+    return it;
+}
 void AdjacencyListGraph::add_edge(nodeId_t src, nodeId_t dest) {
-  auto itSrc = maybe_add_node(fAdjacencyList, src);
-  // TODO not unique
-  itSrc->second.push_back(dest);
+  auto itSrc = checked_node_find(fAdjacencyList, src);
+  checked_node_find(fAdjacencyList, dest);
+
+  itSrc->second.insert(dest);
 }
 
 } // namespace ry
