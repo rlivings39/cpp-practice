@@ -71,4 +71,9 @@ public:
   virtual void remove_node(nodeId_t node) override;
   virtual void add_edge(nodeId_t src, nodeId_t dest) override;
 };
+
+std::vector<nodeId_t> bfs(const Graph &g);
+std::vector<nodeId_t> dfsPreorder(const Graph &g);
+std::vector<nodeId_t> dfsPostorder(const Graph &g);
 } // namespace ry
+

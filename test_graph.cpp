@@ -58,3 +58,33 @@ TEST(Graph, AdjacencyListRemoveNode) {
   ASSERT_EQ(g.getNeighbors(1), std::vector<ry::nodeId_t>({3}));
   ASSERT_EQ(g.getNeighbors(3), std::vector<ry::nodeId_t>());
 }
+
+TEST(Graph, AdjacencyListBfs) {
+  ry::AdjacencyListGraph g;
+  g.add_node(0);
+  g.add_node(1);
+  g.add_node(2);
+  g.add_node(3);
+  g.add_node(4);
+  g.add_edge(0,1);
+  g.add_edge(0, 2);
+  g.add_edge(1,3);
+  g.add_edge(2,4);
+  g.add_edge(3,4);
+  ASSERT_EQ(ry::bfs(g), std::vector<ry::nodeId_t>({0,1,2,3,4}));
+}
+
+TEST(Graph, AdjacencyListDfs) {
+  ry::AdjacencyListGraph g;
+  g.add_node(0);
+  g.add_node(1);
+  g.add_node(2);
+  g.add_node(3);
+  g.add_node(4);
+  g.add_edge(0,1);
+  g.add_edge(0, 2);
+  g.add_edge(1,3);
+  g.add_edge(2,4);
+  g.add_edge(3,4);
+  ASSERT_EQ(ry::dfsPreorder(g), std::vector<ry::nodeId_t>({0,2,4,1,3}));
+}

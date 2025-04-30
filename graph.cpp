@@ -1,7 +1,10 @@
 #include "graph.hpp"
 #include <algorithm>
 #include <iterator>
+#include <queue>
+#include <stack>
 #include <string>
+#include <unordered_set>
 
 /**
  * Algorithms to review / practice
@@ -99,4 +102,71 @@ void AdjacencyListGraph::add_edge(nodeId_t src, nodeId_t dest) {
   itSrc->second.insert(dest);
 }
 
+std::vector<nodeId_t> bfs(const Graph &g) {
+  std::queue<nodeId_t> workQueue;
+  std::unordered_set<nodeId_t> visited;
+
+  std::vector<nodeId_t> res;
+
+  auto startNode = g.getNodes()[0];
+  workQueue.push(startNode);
+  visited.insert(startNode);
+  while (!workQueue.empty()) {
+    auto node = workQueue.front();
+    workQueue.pop();
+    res.push_back(node);
+    auto neighbors = g.getNeighbors(node);
+    for (auto neighbor : neighbors) {
+      auto [_, isUnvisited] = visited.insert(neighbor);
+      if (isUnvisited) {
+        workQueue.push(neighbor);
+      }
+    }
+  }
+  return res;
+}
+
+std::vector<nodeId_t> dfsPreorder(const Graph &g) {
+  std::stack<nodeId_t> workStack;
+  std::unordered_set<nodeId_t> visited;
+  std::vector<nodeId_t> res;
+
+  auto startNode = g.getNodes()[0];
+  workStack.push(startNode);
+  while (!workStack.empty()) {
+    auto node = workStack.top();
+    workStack.pop();
+    auto [_, isUnvisited] = visited.insert(node);
+    if (isUnvisited) {
+      res.push_back(node);
+      auto neighbors = g.getNeighbors(node);
+      for (auto neighbor : neighbors) {
+        workStack.push(neighbor);
+      }
+    }
+  }
+  return res;
+}
+
+std::vector<nodeId_t> dfsPostorder(const Graph &g) {
+  std::stack<nodeId_t> workStack;
+  std::unordered_set<nodeId_t> visited;
+  std::vector<nodeId_t> res;
+
+  auto startNode = g.getNodes()[0];
+  workStack.push(startNode);
+  while (!workStack.empty()) {
+    auto node = workStack.top();
+    workStack.pop();
+    auto [_, isUnvisited] = visited.insert(node);
+    if (isUnvisited) {
+      res.push_back(node);
+      auto neighbors = g.getNeighbors(node);
+      for (auto neighbor : neighbors) {
+        workStack.push(neighbor);
+      }
+    }
+  }
+  return res;
+}
 } // namespace ry
