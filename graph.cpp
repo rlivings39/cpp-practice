@@ -170,4 +170,7 @@ std::vector<nodeId_t> dfsPostorderRecursive(const Graph &g) {
 }
 
 // TODO iterative post order dfs
+// TODO matrix multiply optimization
+// TODO basic constant folding
+// TODO look over tensors from CUDA assignment
 } // namespace ry
