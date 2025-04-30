@@ -148,25 +148,26 @@ std::vector<nodeId_t> dfsPreorder(const Graph &g) {
   return res;
 }
 
-std::vector<nodeId_t> dfsPostorder(const Graph &g) {
-  std::stack<nodeId_t> workStack;
+void dfsPostorderWorker(const Graph &g, std::vector<nodeId_t> &res, std::unordered_set<nodeId_t> &visited, nodeId_t node) {
+  auto [_, isUnvisited] = visited.insert(node);
+  if (!isUnvisited) { return; }
+  auto neighbors = g.getNeighbors(node);
+  for (auto neighbor : neighbors) {
+    if (!visited.contains(neighbor)) {
+      dfsPostorderWorker(g, res, visited, neighbor);
+    }
+  }
+  res.push_back(node);
+}
+
+std::vector<nodeId_t> dfsPostorderRecursive(const Graph &g) {
   std::unordered_set<nodeId_t> visited;
   std::vector<nodeId_t> res;
 
   auto startNode = g.getNodes()[0];
-  workStack.push(startNode);
-  while (!workStack.empty()) {
-    auto node = workStack.top();
-    workStack.pop();
-    auto [_, isUnvisited] = visited.insert(node);
-    if (isUnvisited) {
-      res.push_back(node);
-      auto neighbors = g.getNeighbors(node);
-      for (auto neighbor : neighbors) {
-        workStack.push(neighbor);
-      }
-    }
-  }
+  dfsPostorderWorker(g, res, visited, startNode);
   return res;
 }
+
+// TODO iterative post order dfs
 } // namespace ry

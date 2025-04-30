@@ -71,6 +71,7 @@ TEST(Graph, AdjacencyListBfs) {
   g.add_edge(1,3);
   g.add_edge(2,4);
   g.add_edge(3,4);
+  g.add_edge(4,1);
   ASSERT_EQ(ry::bfs(g), std::vector<ry::nodeId_t>({0,1,2,3,4}));
 }
 
@@ -86,5 +87,22 @@ TEST(Graph, AdjacencyListDfs) {
   g.add_edge(1,3);
   g.add_edge(2,4);
   g.add_edge(3,4);
+  g.add_edge(4,1);
   ASSERT_EQ(ry::dfsPreorder(g), std::vector<ry::nodeId_t>({0,2,4,1,3}));
+  ASSERT_EQ(ry::dfsPostorderRecursive(g), std::vector<ry::nodeId_t>({4,3,1,2,0}));
+}
+
+TEST(Graph, AdjacencyListDfsOrders) {
+  ry::AdjacencyListGraph g;
+  g.add_node(1);
+  g.add_node(2);
+  g.add_node(3);
+  g.add_node(4);
+  g.add_edge(1,2);
+  g.add_edge(1,3);
+  g.add_edge(2,4);
+  g.add_edge(3,4);
+
+  ASSERT_EQ(ry::dfsPreorder(g), std::vector<ry::nodeId_t>({1,3,4,2}));
+  ASSERT_EQ(ry::dfsPostorderRecursive(g), std::vector<ry::nodeId_t>({4,2,3,1}));
 }
