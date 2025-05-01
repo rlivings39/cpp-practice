@@ -105,4 +105,5 @@ TEST(Graph, AdjacencyListDfsOrders) {
 
   ASSERT_EQ(ry::dfsPreorder(g), std::vector<ry::nodeId_t>({1,3,4,2}));
   ASSERT_EQ(ry::dfsPostorderRecursive(g), std::vector<ry::nodeId_t>({4,2,3,1}));
+  ASSERT_EQ(ry::dfsPostorderIterative(g), std::vector<ry::nodeId_t>({4,2,3,1}));
 }

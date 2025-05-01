@@ -75,5 +75,6 @@ public:
 std::vector<nodeId_t> bfs(const Graph &g);
 std::vector<nodeId_t> dfsPreorder(const Graph &g);
 std::vector<nodeId_t> dfsPostorderRecursive(const Graph &g);
+std::vector<nodeId_t> dfsPostorderIterative(const Graph &g);
 } // namespace ry
 

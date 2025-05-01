@@ -169,6 +169,37 @@ std::vector<nodeId_t> dfsPostorderRecursive(const Graph &g) {
   return res;
 }
 
+std::vector<nodeId_t> dfsPostorderIterative(const Graph &g) {
+  // Visited set for when we first visit a node
+  std::unordered_set<nodeId_t> visited;
+  // Pairs {nodeId, isSecondVisit}. isSecondVisit == true means
+  // we're seeing this the second time and ready to store to result
+  // to mimic postorder
+  std::stack<std::pair<nodeId_t, bool>> workStack;
+  std::vector<nodeId_t> res;
+
+  auto startNode = g.getNodes()[0];
+  workStack.emplace(startNode, false);
+  while (!workStack.empty()) {
+    auto node = workStack.top();
+    auto nodeId = node.first;
+    workStack.pop();
+    if (node.second) {
+      res.push_back(nodeId);
+    } else if (!visited.contains(nodeId)) {
+      visited.insert(nodeId);
+      workStack.emplace(nodeId, true);
+      auto neighbors = g.getNeighbors(nodeId);
+      // Reverse to match recursive neighbor visitation order
+      for (auto neighborIt = neighbors.rbegin(); neighborIt != neighbors.rend(); ++neighborIt){
+        workStack.emplace(*neighborIt, false);
+      }
+    }
+  }
+
+  return res;
+}
+
 // TODO iterative post order dfs
 // TODO cycle detection
 // TODO matrix multiply optimization
