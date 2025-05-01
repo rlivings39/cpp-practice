@@ -9,6 +9,8 @@ and run the tests in `./build/cpp-practice-test` to see if things are working ri
 
 The unit test file [tests.cpp](tests.cpp) is a great place to start reading. It covers a matrix multiplication algorithm as well as review on modern C++ features.
 
+[test_graph.cpp](test_graph.cpp) has tests for some graph algorithms
+
 ## Modern C++ features to review
 
 Topics to cover:
@@ -24,7 +26,7 @@ Topics to cover:
 * [x] Optional and variant
 * [x] Lambdas w/ captures and init-capture `[x = std::move(obj)] { use(x); }`
 * [x] Using override, default, delete, const on methods
-* [ ] C'tors, assignment, d'tors (copy and move)
+* [x] C'tors, assignment, d'tors (copy and move)
 * [ ] auto, decltype auto, std::decay, etc.
 * [ ] Initializer lists, uniform initialization
 * [ ] Argument packs/variadiac templates, fold expressions. Make a tuple

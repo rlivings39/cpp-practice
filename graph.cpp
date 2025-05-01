@@ -241,8 +241,6 @@ std::tuple<bool, nodeId_t, nodeId_t> detectCyclesDfs(const Graph &g) {
     std::numeric_limits<nodeId_t>::max()};
 }
 
-// TODO cycle detection
 // TODO matrix multiply optimization
 // TODO basic constant folding
-// TODO look over tensors from CUDA assignment
 } // namespace ry

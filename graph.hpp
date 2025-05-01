@@ -1,10 +1,9 @@
+#pragma once
+
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#pragma once
-
-#include <list>
 
 namespace ry {
 
@@ -72,10 +71,21 @@ public:
   virtual void add_edge(nodeId_t src, nodeId_t dest) override;
 };
 
+// Various visitation methods that all return a vector of
+// node IDs in the order they were visited
 std::vector<nodeId_t> bfs(const Graph &g);
 std::vector<nodeId_t> dfsPreorder(const Graph &g);
 std::vector<nodeId_t> dfsPostorderRecursive(const Graph &g);
 std::vector<nodeId_t> dfsPostorderIterative(const Graph &g);
+
+/**
+ * @brief Detects if g contains a cycle. First tuple element
+ * is true if a cycle is found and false otherwise. If true
+ * there was a back edge fround from tuple[1] to tuple[2]
+ *
+ * @param g
+ * @return std::tuple<bool, nodeId_t, nodeId_t>
+ */
 std::tuple<bool, nodeId_t, nodeId_t> detectCyclesDfs(const Graph &g);
 } // namespace ry
 
