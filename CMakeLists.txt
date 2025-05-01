@@ -16,7 +16,6 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-# TODO fix this and just link
 add_executable(
   cpp-practice-test
   tests.cpp
