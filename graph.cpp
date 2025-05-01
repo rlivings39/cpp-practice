@@ -1,6 +1,7 @@
 #include "graph.hpp"
 #include <algorithm>
 #include <iterator>
+#include <limits>
 #include <queue>
 #include <stack>
 #include <string>
@@ -78,22 +79,22 @@ std::vector<nodeId_t> AdjacencyListGraph::getNeighbors(nodeId_t node) const {
 }
 
 void AdjacencyListGraph::remove_node(nodeId_t node) {
-    auto it = fAdjacencyList.find(node);
-    if (it == fAdjacencyList.end()) {
-        return;
-    }
-    fAdjacencyList.erase(node);
-    for (auto &[_, edgeSet] : fAdjacencyList) {
-        edgeSet.erase(node);
-    }
+  auto it = fAdjacencyList.find(node);
+  if (it == fAdjacencyList.end()) {
+    return;
+  }
+  fAdjacencyList.erase(node);
+  for (auto &[_, edgeSet] : fAdjacencyList) {
+    edgeSet.erase(node);
+  }
 }
 
 auto checked_node_find(AdjacencyListGraph::AdjacencyList_t &l, nodeId_t node) {
-    auto it = l.find(node);
-    if (it == std::end(l)) {
-      throw new InvalidNodeIdError("Non-existent node: " + std::to_string(node));
-    }
-    return it;
+  auto it = l.find(node);
+  if (it == std::end(l)) {
+    throw new InvalidNodeIdError("Non-existent node: " + std::to_string(node));
+  }
+  return it;
 }
 void AdjacencyListGraph::add_edge(nodeId_t src, nodeId_t dest) {
   auto itSrc = checked_node_find(fAdjacencyList, src);
@@ -148,9 +149,12 @@ std::vector<nodeId_t> dfsPreorder(const Graph &g) {
   return res;
 }
 
-void dfsPostorderWorker(const Graph &g, std::vector<nodeId_t> &res, std::unordered_set<nodeId_t> &visited, nodeId_t node) {
+void dfsPostorderWorker(const Graph &g, std::vector<nodeId_t> &res,
+                        std::unordered_set<nodeId_t> &visited, nodeId_t node) {
   auto [_, isUnvisited] = visited.insert(node);
-  if (!isUnvisited) { return; }
+  if (!isUnvisited) {
+    return;
+  }
   auto neighbors = g.getNeighbors(node);
   for (auto neighbor : neighbors) {
     if (!visited.contains(neighbor)) {
@@ -191,7 +195,8 @@ std::vector<nodeId_t> dfsPostorderIterative(const Graph &g) {
       workStack.emplace(nodeId, true);
       auto neighbors = g.getNeighbors(nodeId);
       // Reverse to match recursive neighbor visitation order
-      for (auto neighborIt = neighbors.rbegin(); neighborIt != neighbors.rend(); ++neighborIt){
+      for (auto neighborIt = neighbors.rbegin(); neighborIt != neighbors.rend();
+           ++neighborIt) {
         workStack.emplace(*neighborIt, false);
       }
     }
@@ -200,7 +205,42 @@ std::vector<nodeId_t> dfsPostorderIterative(const Graph &g) {
   return res;
 }
 
-// TODO iterative post order dfs
+std::tuple<bool, nodeId_t, nodeId_t> detectCyclesDfs(const Graph &g) {
+  std::stack<nodeId_t> workStack;
+  std::unordered_set<nodeId_t> visited;
+  std::unordered_set<nodeId_t> recursiveStack;
+
+  auto startNode = g.getNodes()[0];
+  workStack.push(startNode);
+  while (!workStack.empty()) {
+    // Look at next element
+    auto node = workStack.top();
+    workStack.pop();
+    if (recursiveStack.contains(node)) {
+      // We've recursed on this node and are now returning from recursion
+      recursiveStack.erase(node);
+    } else {
+      // If unvisited, recurse on this node. I.e. push neighbors and
+      // check for back edges
+      auto [_, isUnvisited] = visited.insert(node);
+      if (isUnvisited) {
+        // "Recurse" on node
+        recursiveStack.insert(node);
+        workStack.push(node);
+        auto neighbors = g.getNeighbors(node);
+        for (auto neighbor : neighbors) {
+          if (recursiveStack.contains(neighbor)) {
+            return {true, node, neighbor};
+          }
+          workStack.push(neighbor);
+        }
+      }
+    }
+  }
+  return {false, std::numeric_limits<nodeId_t>::max(),
+    std::numeric_limits<nodeId_t>::max()};
+}
+
 // TODO cycle detection
 // TODO matrix multiply optimization
 // TODO basic constant folding
