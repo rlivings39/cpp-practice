@@ -173,6 +173,7 @@ std::vector<nodeId_t> dfsPostorderRecursive(const Graph &g) {
   return res;
 }
 
+// Note: Topological sort is just reverse postorder
 std::vector<nodeId_t> dfsPostorderIterative(const Graph &g) {
   // Visited set for when we first visit a node
   std::unordered_set<nodeId_t> visited;
