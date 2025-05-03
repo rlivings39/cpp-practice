@@ -3,6 +3,8 @@ project(cpp-practice VERSION 0.1.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 add_library(cpp-practice matrix_ops.cpp modern_cpp.cpp graph.cpp)
+add_executable(matrix-main matrix_main.cpp)
+target_link_libraries(matrix-main cpp-practice)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -13,6 +15,12 @@ FetchContent_Declare(
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
+
+# include(CheckCXXCompilerFlag)
+# CHECK_CXX_COMPILER_FLAG("-march=native" COMPILER_SUPPORTS_MARCH_NATIVE)
+# if(COMPILER_SUPPORTS_MARCH_NATIVE)
+#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+# endif()
 
 enable_testing()
 
