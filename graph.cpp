@@ -239,7 +239,7 @@ std::tuple<bool, nodeId_t, nodeId_t> detectCyclesDfs(const Graph &g) {
     }
   }
   return {false, std::numeric_limits<nodeId_t>::max(),
-    std::numeric_limits<nodeId_t>::max()};
+          std::numeric_limits<nodeId_t>::max()};
 }
 
 // TODO matrix multiply optimization

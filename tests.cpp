@@ -386,12 +386,12 @@ struct RyTupleElement<0, RyTuple<T, TRest...>> {
 
 template <std::size_t i, typename T, typename... TRest>
 struct RyTupleElement<i, RyTuple<T, TRest...>> {
-  using type = RyTupleElement<i-1, RyTuple<TRest...>>::type;
+  using type = RyTupleElement<i - 1, RyTuple<TRest...>>::type;
 };
 
-template<std::size_t i, typename T, typename... Ts> auto get_impl(RyTupleElement<i, RyTuple<T, Ts...>> &t) {
-  if constexpr(i == 0) {
-
+template <std::size_t i, typename T, typename... Ts>
+auto get_impl(RyTupleElement<i, RyTuple<T, Ts...>> &t) {
+  if constexpr (i == 0) {
   }
 }
 

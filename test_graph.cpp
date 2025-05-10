@@ -67,13 +67,13 @@ TEST(Graph, AdjacencyListBfs) {
   g.add_node(2);
   g.add_node(3);
   g.add_node(4);
-  g.add_edge(0,1);
+  g.add_edge(0, 1);
   g.add_edge(0, 2);
-  g.add_edge(1,3);
-  g.add_edge(2,4);
-  g.add_edge(3,4);
-  g.add_edge(4,1);
-  ASSERT_EQ(ry::bfs(g), std::vector<ry::nodeId_t>({0,1,2,3,4}));
+  g.add_edge(1, 3);
+  g.add_edge(2, 4);
+  g.add_edge(3, 4);
+  g.add_edge(4, 1);
+  ASSERT_EQ(ry::bfs(g), std::vector<ry::nodeId_t>({0, 1, 2, 3, 4}));
 }
 
 TEST(Graph, AdjacencyListDfs) {
@@ -83,14 +83,15 @@ TEST(Graph, AdjacencyListDfs) {
   g.add_node(2);
   g.add_node(3);
   g.add_node(4);
-  g.add_edge(0,1);
+  g.add_edge(0, 1);
   g.add_edge(0, 2);
-  g.add_edge(1,3);
-  g.add_edge(2,4);
-  g.add_edge(3,4);
-  g.add_edge(4,1);
-  ASSERT_EQ(ry::dfsPreorder(g), std::vector<ry::nodeId_t>({0,2,4,1,3}));
-  ASSERT_EQ(ry::dfsPostorderRecursive(g), std::vector<ry::nodeId_t>({4,3,1,2,0}));
+  g.add_edge(1, 3);
+  g.add_edge(2, 4);
+  g.add_edge(3, 4);
+  g.add_edge(4, 1);
+  ASSERT_EQ(ry::dfsPreorder(g), std::vector<ry::nodeId_t>({0, 2, 4, 1, 3}));
+  ASSERT_EQ(ry::dfsPostorderRecursive(g),
+            std::vector<ry::nodeId_t>({4, 3, 1, 2, 0}));
 }
 
 TEST(Graph, AdjacencyListDfsOrders) {
@@ -99,14 +100,16 @@ TEST(Graph, AdjacencyListDfsOrders) {
   g.add_node(2);
   g.add_node(3);
   g.add_node(4);
-  g.add_edge(1,2);
-  g.add_edge(1,3);
-  g.add_edge(2,4);
-  g.add_edge(3,4);
+  g.add_edge(1, 2);
+  g.add_edge(1, 3);
+  g.add_edge(2, 4);
+  g.add_edge(3, 4);
 
-  ASSERT_EQ(ry::dfsPreorder(g), std::vector<ry::nodeId_t>({1,3,4,2}));
-  ASSERT_EQ(ry::dfsPostorderRecursive(g), std::vector<ry::nodeId_t>({4,2,3,1}));
-  ASSERT_EQ(ry::dfsPostorderIterative(g), std::vector<ry::nodeId_t>({4,2,3,1}));
+  ASSERT_EQ(ry::dfsPreorder(g), std::vector<ry::nodeId_t>({1, 3, 4, 2}));
+  ASSERT_EQ(ry::dfsPostorderRecursive(g),
+            std::vector<ry::nodeId_t>({4, 2, 3, 1}));
+  ASSERT_EQ(ry::dfsPostorderIterative(g),
+            std::vector<ry::nodeId_t>({4, 2, 3, 1}));
 }
 
 TEST(Graph, AdjacencyListCycleDetection) {
@@ -115,14 +118,14 @@ TEST(Graph, AdjacencyListCycleDetection) {
   g.add_node(2);
   g.add_node(3);
   g.add_node(4);
-  g.add_edge(1,2);
-  g.add_edge(1,3);
-  g.add_edge(2,4);
-  g.add_edge(3,4);
+  g.add_edge(1, 2);
+  g.add_edge(1, 3);
+  g.add_edge(2, 4);
+  g.add_edge(3, 4);
 
   auto idmax = std::numeric_limits<ry::nodeId_t>::max();
   ASSERT_EQ(ry::detectCyclesDfs(g), std::make_tuple(false, idmax, idmax));
 
-  g.add_edge(4,1);
+  g.add_edge(4, 1);
   ASSERT_EQ(ry::detectCyclesDfs(g), std::make_tuple(true, 4, 1));
 }

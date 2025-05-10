@@ -52,7 +52,8 @@ public:
   virtual void add_edge(nodeId_t src, nodeId_t dest) override;
   virtual std::vector<nodeId_t> getNodes() const override;
 
-  using AdjacencyList_t = std::unordered_map<nodeId_t, std::unordered_set<nodeId_t>>;
+  using AdjacencyList_t =
+      std::unordered_map<nodeId_t, std::unordered_set<nodeId_t>>;
 
 private:
   // Maps a given node id, src to the list of adjacent node ids, dst[i]
@@ -88,4 +89,3 @@ std::vector<nodeId_t> dfsPostorderIterative(const Graph &g);
  */
 std::tuple<bool, nodeId_t, nodeId_t> detectCyclesDfs(const Graph &g);
 } // namespace ry
-
