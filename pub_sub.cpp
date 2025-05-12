@@ -21,8 +21,8 @@ void Broker::publish(std::string aTopic, std::unique_ptr<Message> aMsg) {
   this->fMessages[aTopic].push(std::move(aMsg));
 }
 
-void Broker::subscribe(std::string aTopic, std::unique_ptr<ISubscriber> aSub) {
-  this->fTopics.insert({aTopic, std::move(aSub)});
+void Broker::subscribe(std::string aTopic, ISubscriber* aSub) {
+  this->fTopics.insert({aTopic, aSub});
 }
 
 void Broker::processMessages() {

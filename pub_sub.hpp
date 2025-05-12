@@ -30,11 +30,11 @@ struct PrintingSubscriber : public ISubscriber {
 // TODO why have this?
 struct Broker {
   void publish(std::string aTopic, std::unique_ptr<Message> aMsg);
-  void subscribe(std::string aTopic, std::unique_ptr<ISubscriber> aSub);
+  void subscribe(std::string aTopic, ISubscriber* aSub);
   void processMessages();
 
 private:
-  std::unordered_multimap<std::string, std::unique_ptr<ISubscriber>> fTopics;
+  std::unordered_multimap<std::string, ISubscriber*> fTopics;
   std::unordered_map<std::string, std::queue<std::unique_ptr<Message>>>
       fMessages;
 };
