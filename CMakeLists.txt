@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10.0)
 project(cpp-practice VERSION 0.1.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
-add_library(cpp-practice matrix_ops.cpp modern_cpp.cpp graph.cpp data_structures.cpp)
+add_library(cpp-practice matrix_ops.cpp modern_cpp.cpp graph.cpp data_structures.cpp pub_sub.cpp)
 add_executable(matrix-main matrix_main.cpp)
 target_link_libraries(matrix-main cpp-practice)
 
@@ -28,6 +28,7 @@ add_executable(
   cpp-practice-test
   tests.cpp
   test_graph.cpp
+  test_pub_sub.cpp
 )
 target_link_libraries(
   cpp-practice-test

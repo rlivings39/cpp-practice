@@ -1,0 +1,39 @@
+#pragma once
+
+#include <any>
+#include <memory>
+#include <queue>
+#include <string>
+#include <unordered_map>
+
+namespace ry {
+struct Message {
+  Message(std::any aData) : fData(aData) {}
+
+  std::any fData;
+};
+
+struct Subscriber {
+  void receive(std::string aTopic, const Message &aMsg);
+};
+
+// TODO why have this?
+struct Broker {
+  void publish(std::string aTopic, std::unique_ptr<Message> aMsg);
+  void subscribe(std::string aTopic, std::unique_ptr<Subscriber> aSub);
+  void processMessages();
+
+private:
+  std::unordered_multimap<std::string, std::unique_ptr<Subscriber>> fTopics;
+  std::unordered_map<std::string, std::queue<std::unique_ptr<Message>>>
+      fMessages;
+};
+
+struct Publisher {
+  Publisher(Broker &aBroker) : fBroker(aBroker) {}
+  void publish(std::string aTopic, std::unique_ptr<Message> aMsg);
+
+private:
+  Broker &fBroker;
+};
+} // namespace ry
