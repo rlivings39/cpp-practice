@@ -1,7 +1,9 @@
 #pragma once
 
 #include <any>
+#include <iostream>
 #include <memory>
+#include <ostream>
 #include <queue>
 #include <string>
 #include <unordered_map>
@@ -13,18 +15,26 @@ struct Message {
   std::any fData;
 };
 
-struct Subscriber {
-  void receive(std::string aTopic, const Message &aMsg);
+struct ISubscriber {
+  virtual void receive(std::string aTopic, const Message &aMsg) = 0;
+};
+
+struct PrintingSubscriber : public ISubscriber {
+  PrintingSubscriber(std::ostream &aOs = std::cout) : fOs(aOs) {}
+  void receive(std::string aTopic, const Message &aMsg) override;
+
+  private:
+  std::ostream &fOs;
 };
 
 // TODO why have this?
 struct Broker {
   void publish(std::string aTopic, std::unique_ptr<Message> aMsg);
-  void subscribe(std::string aTopic, std::unique_ptr<Subscriber> aSub);
+  void subscribe(std::string aTopic, std::unique_ptr<ISubscriber> aSub);
   void processMessages();
 
 private:
-  std::unordered_multimap<std::string, std::unique_ptr<Subscriber>> fTopics;
+  std::unordered_multimap<std::string, std::unique_ptr<ISubscriber>> fTopics;
   std::unordered_map<std::string, std::queue<std::unique_ptr<Message>>>
       fMessages;
 };

@@ -12,8 +12,8 @@
  *
  */
 namespace ry {
-void Subscriber::receive(std::string aTopic, const Message &aMsg) {
-  std::cerr << std::format("Topic {}; Data {}\n", aTopic,
+void PrintingSubscriber::receive(std::string aTopic, const Message &aMsg) {
+  this->fOs << std::format("Topic {}; Data {}\n", aTopic,
                            std::any_cast<int>(aMsg.fData));
 }
 
@@ -21,7 +21,7 @@ void Broker::publish(std::string aTopic, std::unique_ptr<Message> aMsg) {
   this->fMessages[aTopic].push(std::move(aMsg));
 }
 
-void Broker::subscribe(std::string aTopic, std::unique_ptr<Subscriber> aSub) {
+void Broker::subscribe(std::string aTopic, std::unique_ptr<ISubscriber> aSub) {
   this->fTopics.insert({aTopic, std::move(aSub)});
 }
 
