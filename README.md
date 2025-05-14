@@ -60,9 +60,28 @@ General standard version references
 
 Started with Blind 75
 
-* 1. Two sum - Can use a single hash table. Do lookups while iterating rather than 2 passes.
-* 141. Linked list cycle - 2 pointers (tortoise and hare) or visited set
-* 268. Missing number - Can use closed form sum formula for fast algo
-* 21. Merge 2 sorted lists - do-while loop can be useful
-* 572. Subtree of another tree - Visit main tree and match subtree at each node
-* 190. Reverse uint32_t bits. TODO make faster
+* Binary tree problems have generally been good
+* Things I've looked up
+    * C++ checks for isalphanumeric, and std::filter
+* Use iterators/pointers for checks
+
+| Problem | Notes | Actions |
+| -----   | ----- | ------  |
+| 1. Two sum | Can use a single hash table. Do lookups while iterating  rather than 2 passes. |
+| 141. Linked list cycle | 2 pointers (tortoise and hare) or visited set | |
+| 268. Missing number | Can use closed form sum formula for fast algo | |
+| 21. Merge 2 sorted lists | do-while loop can be useful | |
+| 572. Subtree of another tree | Visit main tree and match subtree at  | |each node
+| 190. Reverse uint32_t bits | | TODO make faster |
+| 206. Reverse Linked List | Prev, head, next pointers that we advance | |
+| 121. Best Time to Buy and Sell Stock | | Learn dynamic programming |
+| 128. Longest Consecutive Sequence | Dunno | Solve it |
+| 3. Longest Substring Without Repeating Characters | Solved but slow | Speed up and analyze technique |
+
+### Leetcode TODOs
+
+* [ ] Binary representation questions. I have no intuition here.
+* [ ] Do list reversal again
+* [ ] Iterative solutions for tree traversals?
+* [ ] Learn dynamic programming
+
