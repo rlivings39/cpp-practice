@@ -55,3 +55,13 @@ General standard version references
 * https://en.cppreference.com/w/cpp/14
 * https://en.cppreference.com/w/cpp/17
 * https://en.cppreference.com/w/cpp/20
+
+## Leetcode practice notes
+
+Started with Blind 75
+
+* 1. Two sum - Can use a single hash table. Do lookups while iterating rather than 2 passes.
+* 141. Linked list cycle - 2 pointers (tortoise and hare) or visited set
+* 268. Missing number - Can use closed form sum formula for fast algo
+* 21. Merge 2 sorted lists - do-while loop can be useful
+* 572. Subtree of another tree - Visit main tree and match subtree at each node
