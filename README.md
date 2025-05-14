@@ -65,3 +65,4 @@ Started with Blind 75
 * 268. Missing number - Can use closed form sum formula for fast algo
 * 21. Merge 2 sorted lists - do-while loop can be useful
 * 572. Subtree of another tree - Visit main tree and match subtree at each node
+* 190. Reverse uint32_t bits. TODO make faster
