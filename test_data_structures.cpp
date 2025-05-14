@@ -1,12 +1,8 @@
 
 #include "data_structures.hpp"
 #include <algorithm>
-#include <array>
 #include <gtest/gtest.h>
 #include <initializer_list>
-#include <iostream>
-#include <iterator>
-#include <list>
 #include <sstream>
 #include <vector>
 
