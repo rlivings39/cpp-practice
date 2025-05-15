@@ -77,7 +77,9 @@ Started with Blind 75
 | 121. Best Time to Buy and Sell Stock | [Dynamic programming solution](leetcode.cpp) keeps running score and min which easily extends to next problem |  |
 | 128. Longest Consecutive Sequence | Dunno | Solve it |
 | 3. Longest Substring Without Repeating Characters | Solved but slow | Speed up and analyze technique |
-| 70. Climbing Stairs | | Iterative fibo and figure out why fibo is answer |
+| 70. Climbing Stairs | DP problem consider n-2, n-1. Iterative fibo |  |
+| 191. Number of 1 Bits | | Revisit |
+| 133. Clone Graph | DFS/BFS traversal | Revisit |
 
 ## Dynamic programming
 
