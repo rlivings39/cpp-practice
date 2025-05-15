@@ -74,14 +74,27 @@ Started with Blind 75
 | 572. Subtree of another tree | Visit main tree and match subtree at  | |each node
 | 190. Reverse uint32_t bits | | TODO make faster |
 | 206. Reverse Linked List | Prev, head, next pointers that we advance | |
-| 121. Best Time to Buy and Sell Stock | | Learn dynamic programming |
+| 121. Best Time to Buy and Sell Stock | [Dynamic programming solution](leetcode.cpp) keeps running score and min which easily extends to next problem |  |
 | 128. Longest Consecutive Sequence | Dunno | Solve it |
 | 3. Longest Substring Without Repeating Characters | Solved but slow | Speed up and analyze technique |
+
+## Dynamic programming
+
+A problem must have **optimial substructure** and **overlapping sub-problems** for dynamic programming to be relevant.
+
+If a problem can be solved by combining optimal solutions to non-overlapping sub-problems, this is called **divide and conquer**.
+
+**Optimal substructure** means that the solution to a given optimization problem can be obtained from the combination of optimal solutions to sub problems, often by means of recursion.
+
+**Overlapping sub-problems** means that the space of sub-problems must be small so that any recursive algorithm solving the problem should solve the same sub-problems over and over rather than generating new sub-problems. Dynamic programming solves each sub-problem only once:
+
+* Top-down approach: The direct fallout of recursive formulation. If a solution can be formed by recursively using solutions to sub-problems, one can memoize solutions to the sub-problems
+* Bottom-up approach: We can try to solve the sub-problems first and then use their solutions to build-on and arrive at solutions to bigger problems. This can be tabular by iteratively generating solutions to bigger and bigger sub-problems.
 
 ### Leetcode TODOs
 
 * [ ] Binary representation questions. I have no intuition here.
 * [ ] Do list reversal again
 * [ ] Iterative solutions for tree traversals?
-* [ ] Learn dynamic programming
+* [ ] Learn dynamic programming and moization
 

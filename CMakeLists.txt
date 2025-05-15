@@ -29,6 +29,7 @@ add_executable(
   tests.cpp
   test_graph.cpp
   test_pub_sub.cpp
+  leetcode.cpp
 )
 target_link_libraries(
   cpp-practice-test
