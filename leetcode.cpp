@@ -121,6 +121,7 @@ TEST(Leetcode, WordBreak) {
 }
 
 // TODO: caching uses way too much memory
+// TODO: Can this be iterative or at least bottom-up to make the cache more efficient?
 std::pair<int, std::string> doCache(size_t i, std::pair<size_t, std::string> res, std::vector<std::pair<size_t, std::string>>& cache) {
   cache[i] = res;
   return res;
