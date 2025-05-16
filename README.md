@@ -80,6 +80,8 @@ Started with Blind 75
 | 70. Climbing Stairs | DP problem consider n-2, n-1. Iterative fibo |  |
 | 191. Number of 1 Bits | | Revisit |
 | 133. Clone Graph | DFS/BFS traversal | Revisit |
+| 128. Longest Consecutive Sequence | Slow | Try union-find? Research |
+| 5. Longest Palindromic Substring | 2 pointer solution much faster | |
 
 ## Dynamic programming
 
