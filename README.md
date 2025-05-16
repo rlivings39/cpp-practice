@@ -81,7 +81,7 @@ Started with Blind 75
 | 191. Number of 1 Bits | | Revisit |
 | 133. Clone Graph | DFS/BFS traversal | Revisit |
 | 128. Longest Consecutive Sequence | Slow | Try union-find? Research |
-| 5. Longest Palindromic Substring | 2 pointer solution much faster | |
+| 5. Longest Palindromic Substring | 2 pointer solution pretty good | Manacher's algorithm w/ DP is `O(n)` |
 
 ## Dynamic programming
 
@@ -96,10 +96,19 @@ If a problem can be solved by combining optimal solutions to non-overlapping sub
 * Top-down approach: The direct fallout of recursive formulation. If a solution can be formed by recursively using solutions to sub-problems, one can memoize solutions to the sub-problems
 * Bottom-up approach: We can try to solve the sub-problems first and then use their solutions to build-on and arrive at solutions to bigger problems. This can be tabular by iteratively generating solutions to bigger and bigger sub-problems.
 
+Strategy:
+
+1. Characterize structure of optimal solution
+2. Recursively compute optimal solution based on solutions to subproblems.
+3. Compute the value of an optimal solution (recurse and memoize or perform iteratively). Subproblems need to be computed first.
+4. Construct optimal solution from computed information (optional). E.g. construct longest subsequence rather than just the length
+
+Complexity of DP is `# subproblems X to solve each subproblem given that lookup is O(1)`
+
 ### Leetcode TODOs
 
 * [ ] Binary representation questions. I have no intuition here.
 * [ ] Do list reversal again
 * [ ] Iterative solutions for tree traversals?
 * [ ] Learn dynamic programming and moization
-
+* [ ] Make sure to write your base cases!!!
