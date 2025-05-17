@@ -121,14 +121,19 @@ TEST(Leetcode, WordBreak) {
 }
 
 // TODO: caching uses way too much memory
-// TODO: Can this be iterative or at least bottom-up to make the cache more efficient?
-std::pair<int, std::string> doCache(size_t i, std::pair<size_t, std::string> res, std::vector<std::pair<size_t, std::string>>& cache) {
+// TODO: Can this be iterative or at least bottom-up to make the cache more
+// efficient?
+std::pair<int, std::string>
+doCache(size_t i, std::pair<size_t, std::string> res,
+        std::vector<std::pair<size_t, std::string>> &cache) {
   cache[i] = res;
   return res;
 }
 
-std::pair<int, std::string> longestPalindromeSubsequence(std::string_view s, size_t i, size_t j, std::vector<std::pair<size_t, std::string>>& cache) {
-  auto flati = i*s.size()+j;
+std::pair<int, std::string> longestPalindromeSubsequence(
+    std::string_view s, size_t n, size_t i, size_t j,
+    std::vector<std::pair<size_t, std::string>> &cache) {
+  auto flati = i * n + j;
   if (s.empty()) {
     return doCache(flati, {0, ""}, cache);
   }
@@ -148,14 +153,17 @@ std::pair<int, std::string> longestPalindromeSubsequence(std::string_view s, siz
     if (slen == 2) {
       return doCache(flati, {2, std::string(s)}, cache);
     }
-    auto sub_res = longestPalindromeSubsequence(s.substr(1, slen - 2), i+1, j-1, cache);
+    auto sub_res = longestPalindromeSubsequence(s.substr(1, slen - 2), n, i + 1,
+                                                j - 1, cache);
     res_len = 2 + sub_res.first;
     res_str = s.front() + sub_res.second + s.back();
   } else {
     // We can't extend so just choose the larger of s[i],...,s[j-1] and
     // s[i+1],...s[j]
-    auto sub_res1 = longestPalindromeSubsequence(s.substr(0, slen - 1), i, j-1, cache);
-    auto sub_res2 = longestPalindromeSubsequence(s.substr(1, slen - 1), i+1, j, cache);
+    auto sub_res1 =
+        longestPalindromeSubsequence(s.substr(0, slen - 1), n, i, j - 1, cache);
+    auto sub_res2 =
+        longestPalindromeSubsequence(s.substr(1, slen - 1), n, i + 1, j, cache);
     std::pair<int, std::string> *sub_res;
     if (sub_res1.first >= sub_res2.first) {
       sub_res = &sub_res1;
@@ -169,8 +177,16 @@ std::pair<int, std::string> longestPalindromeSubsequence(std::string_view s, siz
 }
 // Given a string find the longest palindromic subsequence (can skip letters)
 std::pair<int, std::string> longestPalindromeSubsequence(std::string s) {
-  std::vector<std::pair<size_t, std::string>> cache(s.size()*s.size(), std::make_pair(0,""s));
-  return longestPalindromeSubsequence(std::string_view(s), 0, 0, cache);
+  std::vector<std::pair<size_t, std::string>> cache(s.size() * s.size(),
+                                                    std::make_pair(0, ""s));
+  // std::vector<std::pair<size_t, std::string>> cache(1,
+  // std::make_pair(0,""s));
+  return longestPalindromeSubsequence(std::string_view(s), s.size(), 0,
+                                      s.size() - 1, cache);
+}
+
+int longestPalindromeSubseq(std::string s) {
+  return longestPalindromeSubsequence(s).first;
 }
 
 TEST(Leetcode, Longestpalindromesubsequence) {
@@ -180,7 +196,19 @@ TEST(Leetcode, Longestpalindromesubsequence) {
   ASSERT_EQ(longestPalindromeSubsequence("aca"s), std::make_pair(3, "aca"s));
   ASSERT_EQ(longestPalindromeSubsequence("abcdbea"s),
             std::make_pair(5, "abcba"s));
-  int n = 20000;
-  auto s = std::string(n, 'a');
-  ASSERT_EQ(longestPalindromeSubsequence(s), std::make_pair(n, s));
+  // int n = 20000;
+  // auto s = std::string(n, 'a');
+  // ASSERT_EQ(longestPalindromeSubsequence(s), std::make_pair(n, s));
+  ASSERT_EQ(
+      longestPalindromeSubsequence(
+          "euazbipzncptldueeuechubrcourfpftcebikrxhybkymimgvldiwqvkszfycvqyvtiw"
+          "fckexmowcxztkfyzqovbtmzpxojfofbvwnncajvrvdbvjhcrameamcfmcoxryjukhplj"
+          "wszknhiypvyskmsujkuggpztltpgoczafmfelahqwjbhxtjmebnymdyxoeodqmvkxitt"
+          "xjnlltmoobsgzdfhismogqfpfhvqnxeuosjqqalvwhsidgiavcatjjgeztrjuoixxxoz"
+          "nklcxolgpuktirmduxdywwlbikaqkqajzbsjvdgjcnbtfksqhquiwnwflkldgdrqrnwm"
+          "shdpykicozfowmumzeuznolmgjlltypyufpzjpuvucmesnnrwppheizkapovoloneaxp"
+          "finaontwtdqsdvzmqlgkdxlbeguackbdkftzbnynmcejtwudocemcfnuzbttcoew"),
+      std::make_pair(
+          159,
+          "ebzncduecbcuebxkglqvsqtifeoovzpwnnemcupjzypyjglozemmoodmnllfiqhqnsjqqalwditgzoxxxozgtidwlaqqjsnqhqifllnmdoommezolgjypyzjpucmennwpzvooefitqsvqlgkxbeucbceudcnzbe"s));
 }

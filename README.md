@@ -82,6 +82,7 @@ Started with Blind 75
 | 133. Clone Graph | DFS/BFS traversal | Revisit |
 | 128. Longest Consecutive Sequence | Slow | Try union-find? Research |
 | 5. Longest Palindromic Substring | 2 pointer solution pretty good | Manacher's algorithm w/ DP is `O(n)` |
+| 516. Longest Palindromic Subsequence | DP solution with caching works well. Took me a *very* long time | Practice dp more |
 
 ## Dynamic programming
 
