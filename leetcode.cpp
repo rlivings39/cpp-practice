@@ -196,9 +196,7 @@ TEST(Leetcode, Longestpalindromesubsequence) {
   ASSERT_EQ(longestPalindromeSubsequence("aca"s), std::make_pair(3, "aca"s));
   ASSERT_EQ(longestPalindromeSubsequence("abcdbea"s),
             std::make_pair(5, "abcba"s));
-  // int n = 20000;
-  // auto s = std::string(n, 'a');
-  // ASSERT_EQ(longestPalindromeSubsequence(s), std::make_pair(n, s));
+
   ASSERT_EQ(
       longestPalindromeSubsequence(
           "euazbipzncptldueeuechubrcourfpftcebikrxhybkymimgvldiwqvkszfycvqyvtiw"
