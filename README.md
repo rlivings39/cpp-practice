@@ -110,8 +110,8 @@ Complexity of DP is `# subproblems X to solve each subproblem given that lookup 
 
 ### Leetcode TODOs
 
-* [ ] Divide and conquer
 * [ ] Dynamic programming from CLRS book
+* [ ] Divide and conquer from CLRS book
 * [ ] Graph algos from CLRS book
 * [ ] Binary representation questions. I have no intuition here.
 * [ ] Do list reversal again
