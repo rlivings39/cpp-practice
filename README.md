@@ -1,6 +1,8 @@
 # cpp-practice
 
-Some exercises for me to shake off the C++ cobwebs. Generally build with CMake
+Some exercises for me to shake off the C++ cobwebs and practice LeetCode.
+
+Build with CMake
 
 ```bash
 cmake --build ./build --config Debug --target all
@@ -108,6 +110,9 @@ Complexity of DP is `# subproblems X to solve each subproblem given that lookup 
 
 ### Leetcode TODOs
 
+* [ ] Divide and conquer
+* [ ] Dynamic programming from CLRS book
+* [ ] Graph algos from CLRS book
 * [ ] Binary representation questions. I have no intuition here.
 * [ ] Do list reversal again
 * [ ] Iterative solutions for tree traversals?
