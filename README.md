@@ -97,7 +97,7 @@ If a problem can be solved by combining optimal solutions to non-overlapping sub
 **Overlapping sub-problems** means that the space of sub-problems must be small so that any recursive algorithm solving the problem should solve the same sub-problems over and over rather than generating new sub-problems. Dynamic programming solves each sub-problem only once:
 
 * **Top-down** approach: The direct fallout of recursive formulation. If a solution can be formed by recursively using solutions to sub-problems, one can memoize solutions to the sub-problems
-* **Bottom-up** approach: We can try to solve the sub-problems first and then use their solutions to build-on and arrive at solutions to bigger problems. This can be tabular by iteratively generating solutions to bigger and bigger sub-problems.
+* **Bottom-up** approach: We can try to solve the sub-problems first and then use their solutions to build-on and arrive at solutions to bigger problems. Solve the problems in increasing size (or some other ordering). Store the solutions to the "smaller" problems and refer to them when constructing the solutions to the larger problems.
 
 Strategy:
 
