@@ -31,7 +31,7 @@ Topics to cover:
 * [x] C'tors, assignment, d'tors (copy and move)
 * [ ] auto, decltype auto, std::decay, etc.
 * [ ] Initializer lists, uniform initialization
-* [ ] Argument packs/variadiac templates, fold expressions. Make a tuple
+* [ ] Argument packs/variadic templates, fold expressions. Make a tuple
     * https://en.cppreference.com/w/cpp/language/pack has a lot of good detail. Crazy complicated.
     * https://en.cppreference.com/w/cpp/language/fold
 * [ ] Smart pointers in graphs/cycles
@@ -58,13 +58,13 @@ General standard version references
 * https://en.cppreference.com/w/cpp/17
 * https://en.cppreference.com/w/cpp/20
 
-## Leetcode practice notes
+## LeetCode practice notes
 
 Started with Blind 75
 
 * Binary tree problems have generally been good
 * Things I've looked up
-    * C++ checks for isalphanumeric, and std::filter
+    * C++ checks for `isalphanumeric`, and std::filter
 * Use iterators/pointers for checks
 
 | Problem | Notes | Actions |
@@ -79,7 +79,7 @@ Started with Blind 75
 | 121. Best Time to Buy and Sell Stock | [Dynamic programming solution](leetcode.cpp) keeps running score and min which easily extends to next problem |  |
 | 128. Longest Consecutive Sequence | Dunno | Solve it |
 | 3. Longest Substring Without Repeating Characters | Solved but slow | Speed up and analyze technique |
-| 70. Climbing Stairs | DP problem consider n-2, n-1. Iterative fibo |  |
+| 70. Climbing Stairs | DP problem consider n-2, n-1. Iterative Fibonacci |  |
 | 191. Number of 1 Bits | | Revisit |
 | 133. Clone Graph | DFS/BFS traversal | Revisit |
 | 128. Longest Consecutive Sequence | Slow | Try union-find? Research |
@@ -88,7 +88,7 @@ Started with Blind 75
 
 ## Dynamic programming
 
-A problem must have **optimial substructure** and **overlapping sub-problems** for dynamic programming to be relevant.
+A problem must have **optimal substructure** and **overlapping sub-problems** for dynamic programming to be relevant.
 
 If a problem can be solved by combining optimal solutions to non-overlapping sub-problems, this is called **divide and conquer**.
 
@@ -96,8 +96,8 @@ If a problem can be solved by combining optimal solutions to non-overlapping sub
 
 **Overlapping sub-problems** means that the space of sub-problems must be small so that any recursive algorithm solving the problem should solve the same sub-problems over and over rather than generating new sub-problems. Dynamic programming solves each sub-problem only once:
 
-* Top-down approach: The direct fallout of recursive formulation. If a solution can be formed by recursively using solutions to sub-problems, one can memoize solutions to the sub-problems
-* Bottom-up approach: We can try to solve the sub-problems first and then use their solutions to build-on and arrive at solutions to bigger problems. This can be tabular by iteratively generating solutions to bigger and bigger sub-problems.
+* **Top-down** approach: The direct fallout of recursive formulation. If a solution can be formed by recursively using solutions to sub-problems, one can memoize solutions to the sub-problems
+* **Bottom-up** approach: We can try to solve the sub-problems first and then use their solutions to build-on and arrive at solutions to bigger problems. This can be tabular by iteratively generating solutions to bigger and bigger sub-problems.
 
 Strategy:
 
@@ -116,5 +116,5 @@ Complexity of DP is `# subproblems X to solve each subproblem given that lookup 
 * [ ] Binary representation questions. I have no intuition here.
 * [ ] Do list reversal again
 * [ ] Iterative solutions for tree traversals?
-* [ ] Learn dynamic programming and moization
+* [ ] Learn dynamic programming and memoization
 * [ ] Make sure to write your base cases!!!

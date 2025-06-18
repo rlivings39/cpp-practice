@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <ranges>
 #include <stack>
 #include <string>
 #include <string_view>
@@ -23,7 +24,7 @@ int maxProfit(std::vector<int> prices) {
 
 } // namespace ry
 
-TEST(Leetcode, DynamicProgrammingBuySellStock) {
+TEST(LeetCode, DynamicProgrammingBuySellStock) {
   std::vector<int> prices{7, 6, 4, 3, 1};
   ASSERT_EQ(ry::maxProfit({7, 6, 4, 3, 1}), 0);
   ASSERT_EQ(ry::maxProfit({7, 1, 5, 3, 6, 4}), 5);
@@ -76,7 +77,7 @@ Node *cloneGraph(Node *node) {
   return result;
 }
 
-TEST(Leetcode, CloneGraphDfs) {
+TEST(LeetCode, CloneGraphDfs) {
   Node n1(1), n2(2), n3(3), n4(4);
   n2.neighbors.push_back(&n4);
   n4.neighbors.push_back(&n2);
@@ -109,7 +110,7 @@ bool wordBreak(std::string s, std::vector<std::string> &wordDict) {
   return wordBreak(s, 0, wordDict, word_set);
 }
 
-TEST(Leetcode, WordBreak) {
+TEST(LeetCode, WordBreak) {
   std::string s{"leetcode"};
   std::vector<std::string> word_dict{"leet", "code"};
 
@@ -189,7 +190,7 @@ int longestPalindromeSubseq(std::string s) {
   return longestPalindromeSubsequence(s).first;
 }
 
-TEST(Leetcode, Longestpalindromesubsequence) {
+TEST(LeetCode, Longestpalindromesubsequence) {
   ASSERT_EQ(longestPalindromeSubsequence("a"s), std::make_pair(1, "a"s));
   ASSERT_EQ(longestPalindromeSubsequence("aa"s), std::make_pair(2, "aa"s));
   ASSERT_EQ(longestPalindromeSubsequence("aaaa"s), std::make_pair(4, "aaaa"s));
@@ -209,4 +210,60 @@ TEST(Leetcode, Longestpalindromesubsequence) {
       std::make_pair(
           159,
           "ebzncduecbcuebxkglqvsqtifeoovzpwnnemcupjzypyjglozemmoodmnllfiqhqnsjqqalwditgzoxxxozgtidwlaqqjsnqhqifllnmdoommezolgjypyzjpucmennwpzvooefitqsvqlgkxbeucbceudcnzbe"s));
+}
+
+/**
+ * Rod cutting problem from CLR section 14.1
+ *
+ * Given a rod of length n and a table p of prices
+ * where p[i] is the price of a rod of length i, determine
+ * how to cut the rod into 0-n pieces to maximize price. Return
+ * the optimal price.
+ */
+
+int cutRodTopdownWorker(std::vector<int> &p, std::vector<int> &cache, int n) {
+  int res{0};
+  if (cache[n] >= 0) {
+    return cache[n];
+  }
+  if (n == 0) {
+    res = 0;
+  }
+  for (int i : std::ranges::iota_view(1, n + 1)) {
+    res = std::max(res, p[i] + cutRodTopdownWorker(p, cache, n - i));
+  }
+  cache[n] = res;
+  return res;
+}
+
+int cutRodTopdown(std::vector<int> &p, int n) {
+  std::vector<int> cache(n + 1, -1);
+  return cutRodTopdownWorker(p, cache, n);
+}
+
+int cutRodBottomUp(std::vector<int> &p, int n) {
+  std::vector<int> cache(n+1, -1);
+  cache[0] = 0;
+  // Loop over rod lengths from small to large. These are the
+  // small subproblems.
+  for (int len : std::ranges::iota_view(1,n+1)) {
+    int res{0};
+    // Evaluate the price of a cut at each location on the smaller rod
+    for (int pos : std::ranges::iota_view(1,len+1)) {
+      res = std::max(res, p[pos] + cache[len - pos]);
+    }
+    cache[len] = res;
+  }
+
+  return cache[n];
+}
+
+TEST(LeetCode, CutRod) {
+  std::vector<int> p{0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30};
+
+  EXPECT_EQ(cutRodTopdown(p, 4), 10);
+  EXPECT_EQ(cutRodTopdown(p, 10), 30);
+
+  EXPECT_EQ(cutRodBottomUp(p, 4), 10);
+  EXPECT_EQ(cutRodBottomUp(p, 10), 30);
 }
