@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <limits>
 #include <ranges>
 #include <stack>
 #include <string>
@@ -260,10 +261,92 @@ int cutRodBottomUp(std::vector<int> &p, int n) {
 
 TEST(LeetCode, CutRod) {
   std::vector<int> p{0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30};
-
   EXPECT_EQ(cutRodTopdown(p, 4), 10);
   EXPECT_EQ(cutRodTopdown(p, 10), 30);
 
   EXPECT_EQ(cutRodBottomUp(p, 4), 10);
   EXPECT_EQ(cutRodBottomUp(p, 10), 30);
+}
+
+// Matrix-chain multiplication from CLRS section 14.2.
+//
+// Given a sequence `<A1, A2, ..., An>` of n arbitrarily but compatibly shaped
+// matrices, parenthesize the product A1*A2*...*An in a way that minimizes the
+// number of scalar multiplications. Assume that the size of matrix Ai is pi-1 x
+// pi. Take <p0,p1,...,pn> as a parameter.
+//
+// The number of ways to parenthesize is the sequence of Catalan numbers that
+// grows with a lower bound \Omega(4^n / n^(3/2))
+//
+// The runtime of the computation can be changed significantly based on how the
+// multiplication is parenthesized.
+//
+// 1. Suppose you compute the product Ai*...*Aj for i <= j. A step to associate
+// this is to choose a k, i<=k<j, and split the product into 2.
+// (Ai*...*Ak)*(Ak+1*...*Aj).
+//
+// In an optimal solution, each of these subproblems must use an optimal
+// solution. Otherwise substituting that solution would yield a better
+// algorithm.
+//
+// 2. Once you have your subproblem solutions, to combine to a larger one you
+// just add the cost of the two subproblems and the cost of multiplying the
+// subproblem result matrices to get the new result.
+
+template <typename T> struct matrix {
+  explicit matrix(size_t nrows, size_t ncols)
+      : fNrows(nrows), fNcols(ncols), fData(fNcols * fNrows) {}
+  T &operator()(size_t i, size_t j) {
+    return this->fData[i * fNrows + j];
+  }
+
+  const T &operator()(size_t i, size_t j) const {
+    return this->fData[i * fNrows + j];
+  }
+
+  size_t numel() {
+    return fNrows * fNcols;
+  }
+
+private:
+  size_t fNrows;
+  size_t fNcols;
+  std::vector<T> fData;
+};
+
+// TODO return optimal paren locations
+int matrixChainBottomUp(std::vector<int> const &p) {
+  int n = p.size() - 1;
+  matrix<int> costs(n, n), splits(n, n);
+
+  // Initialize base cases for window of size 1
+  for (int i : std::ranges::iota_view(0, n)) {
+    costs(i, i + 1) = p[i] * p[i + 1] * p[i + 2];
+  }
+
+  // Now compute the rest
+  for (int len : std::ranges::iota_view(2, n + 1)) {
+    for (int i : std::ranges::iota_view(0, n - len)) {
+      int j = i + len;
+      int res{std::numeric_limits<int>::max()};
+
+      // Check each feasible split
+      for (int k : std::ranges::iota_view(i, j)) {
+        res = std::min(res, costs(i, k) + costs(k + 1, j) +
+                                p[i] * p[k + 1] * p[j + 1]);
+      }
+      costs(i, j) = res;
+    }
+  }
+  return costs(0, n - 1);
+}
+
+TEST(LeetCode, MatrixChainMultiplication) {
+  std::vector<int> prob1{10, 100, 5, 50};
+
+  EXPECT_EQ(matrixChainBottomUp(prob1), 7500);
+
+  std::vector<int> prob2{30, 35, 15, 5, 10, 20, 25};
+
+  EXPECT_EQ(matrixChainBottomUp(prob2), 15125);
 }
