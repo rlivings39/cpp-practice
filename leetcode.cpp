@@ -242,14 +242,14 @@ int cutRodTopdown(std::vector<int> &p, int n) {
 }
 
 int cutRodBottomUp(std::vector<int> &p, int n) {
-  std::vector<int> cache(n+1, -1);
+  std::vector<int> cache(n + 1, -1);
   cache[0] = 0;
   // Loop over rod lengths from small to large. These are the
   // small subproblems.
-  for (int len : std::ranges::iota_view(1,n+1)) {
+  for (int len : std::ranges::iota_view(1, n + 1)) {
     int res{0};
     // Evaluate the price of a cut at each location on the smaller rod
-    for (int pos : std::ranges::iota_view(1,len+1)) {
+    for (int pos : std::ranges::iota_view(1, len + 1)) {
       res = std::max(res, p[pos] + cache[len - pos]);
     }
     cache[len] = res;
