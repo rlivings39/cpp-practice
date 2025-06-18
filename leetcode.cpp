@@ -319,13 +319,13 @@ int matrixChainBottomUp(std::vector<int> const &p) {
   int n = p.size() - 1;
   matrix<int> costs(n, n), splits(n, n);
 
-  // Initialize base cases for window of size 1
+  // Initialize base cases for window of size 0
   for (int i : std::ranges::iota_view(0, n)) {
-    costs(i, i + 1) = p[i] * p[i + 1] * p[i + 2];
+    costs(i, i + 1) = 0;
   }
 
   // Now compute the rest
-  for (int len : std::ranges::iota_view(2, n + 1)) {
+  for (int len : std::ranges::iota_view(1, n + 1)) {
     for (int i : std::ranges::iota_view(0, n - len)) {
       int j = i + len;
       int res{std::numeric_limits<int>::max()};
