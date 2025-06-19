@@ -108,6 +108,27 @@ Strategy:
 
 Complexity of DP is `# subproblems X to solve each subproblem given that lookup is O(1)`
 
+### Dynamic programming in detail
+
+Optimal substructure and overlapping subproblems are the two attributes for when dynamic programming can apply to an optimization problem.
+
+Optimal substructure means that you can construct an optimal solution from optimal solutions to subproblems.
+
+CLRS presents a common pattern
+
+1. Show that a solution involves making a choice that creates subproblems (e.g. where to split)
+2. Suppose you have a choice leading to an optimal solution (though you don't yet have it)
+3. Given this choice, determine the subproblems that arise and how to characterize the space of subproblems
+4. Show that solutions to the subproblems must also be optimal via contradiction. Suppose one isn't optimal. Then show that if you replaced the suboptimal solution with an optimal solution that the global solution improves.
+
+Optimal substructure varies in how many subproblems an optimal solution uses and how many choices you have in determining which subproblems are used.
+
+Subproblems must also be **independent** of each other.
+
+Subproblems must also overlap for dynamic programming to be useful. If they don't overlap then you're often just in divide and conquer land. Having the problems overlap means that you can leverage the repeated problems to make your algorithm more efficient either by memoizing in a top-down solution or building up solutions in a bottom-up solution.
+
+When all subproblems must be solved, a bottom-up solution often has better constant factors than a top-down one with memoization. When only some of the subproblems must be solved, top-down with memoization can avoid solving the extraneous ones.
+
 ### Leetcode TODOs
 
 * [ ] Dynamic programming from CLRS book
