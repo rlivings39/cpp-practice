@@ -1,10 +1,14 @@
+#include <algorithm>
+#include <format>
 #include <gtest/gtest.h>
 #include <limits>
 #include <ranges>
+#include <sstream>
 #include <stack>
 #include <string>
 #include <string_view>
 #include <unordered_set>
+#include <utility>
 
 using namespace std::literals;
 namespace ry {
@@ -308,14 +312,17 @@ template <typename T> struct matrix {
     return fNrows * fNcols;
   }
 
+  void fill(T val) {
+    std::fill(fData.begin(), fData.end(), val);
+  }
+
 private:
   size_t fNrows;
   size_t fNcols;
   std::vector<T> fData;
 };
 
-// TODO return optimal paren locations
-int matrixChainBottomUp(std::vector<int> const &p) {
+auto matrixChainBottomUp(std::vector<int> const &p) {
   int n = p.size() - 1;
   matrix<int> costs(n, n), splits(n, n);
 
@@ -323,30 +330,55 @@ int matrixChainBottomUp(std::vector<int> const &p) {
   for (int i : std::ranges::iota_view(0, n)) {
     costs(i, i + 1) = 0;
   }
+  splits.fill(-1);
 
   // Now compute the rest
   for (int len : std::ranges::iota_view(1, n + 1)) {
     for (int i : std::ranges::iota_view(0, n - len)) {
       int j = i + len;
       int res{std::numeric_limits<int>::max()};
-
+      int split{0};
       // Check each feasible split
       for (int k : std::ranges::iota_view(i, j)) {
-        res = std::min(res, costs(i, k) + costs(k + 1, j) +
-                                p[i] * p[k + 1] * p[j + 1]);
+        int current_cost =
+            costs(i, k) + costs(k + 1, j) + p[i] * p[k + 1] * p[j + 1];
+        if (current_cost < res) {
+          res = current_cost;
+          split = k;
+        }
       }
       costs(i, j) = res;
+      splits(i, j) = split;
     }
   }
-  return costs(0, n - 1);
+  return std::make_pair(costs(0, n - 1), splits);
+}
+
+void printParensWorker(matrix<int> const &splits, int i, int j,
+                       std::ostringstream &oss) {
+  if (i == j) {
+    oss << std::format("A{}", i);
+  } else {
+    oss << "(";
+    printParensWorker(splits, i, splits(i, j), oss);
+    printParensWorker(splits, splits(i, j) + 1, j, oss);
+    oss << ")";
+  }
+}
+
+std::string printParens(matrix<int> const &splits, int i, int j) {
+  std::ostringstream oss;
+  printParensWorker(splits, i, j, oss);
+  return oss.str();
 }
 
 TEST(LeetCode, MatrixChainMultiplication) {
   std::vector<int> prob1{10, 100, 5, 50};
-
-  EXPECT_EQ(matrixChainBottomUp(prob1), 7500);
+  auto [cost, splits] = matrixChainBottomUp(prob1);
+  EXPECT_EQ(cost, 7500);
 
   std::vector<int> prob2{30, 35, 15, 5, 10, 20, 25};
-
-  EXPECT_EQ(matrixChainBottomUp(prob2), 15125);
+  std::tie(cost, splits) = matrixChainBottomUp(prob2);
+  EXPECT_EQ(cost, 15125);
+  EXPECT_EQ(printParens(splits, 0, prob2.size() - 2), "((A0(A1A2))((A3A4)A5))");
 }
