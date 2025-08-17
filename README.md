@@ -86,6 +86,7 @@ Started with Blind 75
 | 5. Longest Palindromic Substring | 2 pointer solution pretty good | Manacher's algorithm w/ DP is `O(n)` |
 | 516. Longest Palindromic Subsequence | DP solution with caching works well. Took me a *very* long time | Practice dp more |
 | 11. Container With Most Water | 2 pointer greedy solution | Figure out why 2 pointer solution is maximal |
+| 15. 3Sum | Got solution without uniqueness | Couldn't figure out uniqueness. People say sort array and use 2 pointer technique. |
 
 ## Dynamic programming
 
