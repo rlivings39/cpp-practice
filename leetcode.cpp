@@ -382,3 +382,51 @@ TEST(LeetCode, MatrixChainMultiplication) {
   EXPECT_EQ(cost, 15125);
   EXPECT_EQ(printParens(splits, 0, prob2.size() - 2), "((A0(A1A2))((A3A4)A5))");
 }
+
+// 3 sum - given a vector of numbers find unique triples that sum to zero where
+// indices are unique
+std::vector<std::vector<int>> threeSum(std::vector<int> &nums) {
+  std::sort(nums.begin(), nums.end());
+  std::vector<std::vector<int>> res;
+  if (nums.size() < 3) {
+    return res;
+  };
+  size_t start{0}, left{0}, right{0};
+  for (auto val : nums) {
+    // Skip over duplicate start values
+    if (start > 0 && nums[start - 1] == val) {
+      ++start;
+      continue;
+    }
+    left = start + 1;
+    right = nums.size() - 1;
+    while (left < right) {
+      auto left_val = nums[left];
+      auto right_val = nums[right];
+      auto sum2 = left_val + right_val;
+      if (sum2 == -val) {
+        res.push_back({val, left_val, right_val});
+        ++left;
+        // Skip over duplicate middle values
+        while (left < right && nums[left] == nums[left - 1]) {
+          ++left;
+        }
+      } else if (sum2 < -val) {
+        ++left;
+      } else {
+        --right;
+      }
+    }
+    ++start;
+  }
+  return res;
+}
+
+TEST(LeetCode, ThreeSum) {
+  std::vector<int> nums{2,  -3, 0, -2, -5, -5, -4, 1,  2,
+                        -2, 2,  0, 2,  -4, 5,  5,  -10};
+  auto res = threeSum(nums);
+  std::vector<std::vector<int>> expected = {
+      {-10, 5, 5}, {-5, 0, 5}, {-4, 2, 2}, {-3, -2, 5}, {-3, 1, 2}, {-2, 0, 2}};
+  EXPECT_EQ(res, expected);
+}
