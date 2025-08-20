@@ -30,6 +30,7 @@ add_executable(
   test_graph.cpp
   test_pub_sub.cpp
   leetcode.cpp
+  lexer.cpp
 )
 target_link_libraries(
   cpp-practice-test
