@@ -61,3 +61,20 @@ General standard version references
 
 ## learncpp.com review
 
+### Initialization
+
+As of c++17 `int b=5; int c(6);, int d{7};, int e{};` are all basically equivalent...except when they're not.
+
+1. List initialization `{}` disallows narrowing conversions
+2. Copy init `T t = val` allows non-explicit conversion functions.
+3. `{}` prefers matching `std::initializer_list` constructors
+
+Class template argument deduction in C++17 occurs in a few places
+
+* Declarations with initializers
+* Function-style casts `std::lock_guard(some_mutex)`
+* New expressions
+
+### Next
+
+https://www.learncpp.com/cpp-tutorial/syntax-and-semantic-errors/
