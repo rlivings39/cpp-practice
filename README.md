@@ -6,6 +6,7 @@ Build with CMake
 
 ```bash
 cmake --build ./build --config Debug --target all
+ctest --test-dir build
 ```
 and run the tests in `./build/cpp-practice-test` to see if things are working right.
 
@@ -57,4 +58,6 @@ General standard version references
 * https://en.cppreference.com/w/cpp/14
 * https://en.cppreference.com/w/cpp/17
 * https://en.cppreference.com/w/cpp/20
+
+## learncpp.com review
 
