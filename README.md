@@ -18,6 +18,8 @@ The unit test file [tests.cpp](tests.cpp) is a great place to start reading. It 
 
 Topics to cover:
 
+* [ ] Google common C++ interview questions
+* [ ] Various casts and their purpose: static, const, reinterp, dynamic, c
 * [x] Smart pointers, especially weak_ptr
 * [x] r-value references, universal references
 * [x] Private, virtual, etc. inheritance
@@ -74,6 +76,33 @@ Class template argument deduction in C++17 occurs in a few places
 * Declarations with initializers
 * Function-style casts `std::lock_guard(some_mutex)`
 * New expressions
+
+### Casts
+
+* `const_cast` - Allows for adding/removing `const` from an expression. Typically we're dealing with references/pointers to `const`. It is UB to write to a const object after `const_cast`
+* `static_cast` - General value conversions
+    * `static_cast<Derived&>(base_reference)` is allowed if base_reference is a sub-object of a `Derived`. Similar for rvalue references
+    *  `static_cast<void>(foo)` is a discarded value expression
+    * `static_cast<target_type>(expression)` is equivalent to `target-type temp(expression);` for some invented `temp`
+    * Pointer to base can be cast to pointer to derived when expression is a subobject of a derived. Except for `virtual` and other bad cases. No runtime check is done.
+    * Derived to base is allowed and is implicit
+    * Pointer to void can be converted to pointer to `T` provided that alignment requirements are met
+* `dynamic_cast` - Safely casts up, down, and sideways in inheritance hierarchy
+    * Adding CV qualifiers is legal as with `static_cast` and implicit
+    * Pointer to derived can be cast to pointer to base as with `static_cast` and implicit. Ditto for references. **Upcast**
+    * `nullptr` of a polymorphic type can covert to another pointer
+    * Otherwise operand must be a pointer or reference to an object of polymorphic type within its lifetime or within c'tor/d'tor.
+    * Pointer to void is converted to the most-derived object pointed to
+    * Otherwise a runtime check is performed to see if the pointed to/referred to type of the operand can be converted to the target type.
+        * A valid **downcast** from base to derived is allowed if base refers/points to a derived
+        * A **cross cast/side cast** is valid for something like `struct D: A, B` if you have a reference/pointer to `A` with super object `D` you can cast to reference/pointer to `B`
+        * Invalid pointer casts return nullptr. Invalid reference casts throw `std::bad_cast`
+* `reinterpret_cast` - Generally results in no CPU instructions and just tells the compiler to treat an object as having another type
+    * Pointers can be converted to integer/enum types large enough to hold the value e.g. `std::uintptr_t`
+    * Integer or enum can be converted to pointer
+    * `nullptr_t` can be converted to integer type. Nothing can be converted to `nullptr_t`
+    * Pointer types are convertible as if `static_cast<cv T2*>(static_cast<cv void*>(expression))`. They must be alignment compatible. Dereferencing is OK only when type-accessible. This basically means `char/unsigned char`, the same type, or the corresponding signed/unsigned type
+    * `std::memcpy` should be used to reinterpret bytes of unrelated types
 
 ### Next
 
