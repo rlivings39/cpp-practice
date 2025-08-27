@@ -79,6 +79,11 @@ std::vector<nodeId_t> dfsPreorder(const Graph &g);
 std::vector<nodeId_t> dfsPostorderRecursive(const Graph &g);
 std::vector<nodeId_t> dfsPostorderIterative(const Graph &g);
 
+std::vector<nodeId_t> bfs2(const Graph &g);
+std::vector<nodeId_t> dfsPreorder2(const Graph &g);
+std::vector<nodeId_t> dfsPostorderRecursive2(const Graph &g);
+std::vector<nodeId_t> dfsPostorderIterative2(const Graph &g);
+
 /**
  * @brief Detects if g contains a cycle. First tuple element
  * is true if a cycle is found and false otherwise. If true

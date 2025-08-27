@@ -242,6 +242,131 @@ std::tuple<bool, nodeId_t, nodeId_t> detectCyclesDfs(const Graph &g) {
           std::numeric_limits<nodeId_t>::max()};
 }
 
+/**
+ * Algorithm
+ *  - Start from the "root". Enqueue it and visit it.
+ *  - Loop until queue is empty. On each iteration extract next element.
+ *  - Record this element in the output
+ *  - For each neighbor: if it is unvisited, visit it and enqueue it
+ *  - We mark each node visited here to avoid enqueueing things already in the
+ * queue
+ *
+ * @param g
+ * @return std::vector<nodeId_t>
+ */
+std::vector<nodeId_t> bfs2(const Graph &g) {
+  std::vector<nodeId_t> res;
+  std::unordered_set<nodeId_t> visited;
+  auto nodes = g.getNodes();
+  if (nodes.size() == 0) {
+    return res;
+  }
+  auto root = nodes[0];
+  std::queue<nodeId_t> workqueue;
+  workqueue.push(root);
+  visited.insert(root);
+  while (!workqueue.empty()) {
+    // Visit first node in queue
+    auto node = workqueue.front();
+    workqueue.pop();
+    res.push_back(node);
+    // Enqueue adjacent nodes
+    for (auto neighbor : g.getNeighbors(node)) {
+      if (visited.count(neighbor) == 0) {
+        workqueue.push(neighbor);
+        // Don't enqueue this node again
+        visited.insert(neighbor);
+      }
+    }
+  }
+  return res;
+}
+
+std::vector<nodeId_t> dfsPreorder2(const Graph &g) {
+  std::vector<nodeId_t> res;
+  std::unordered_set<nodeId_t> visited;
+  std::stack<nodeId_t> workstack;
+  auto nodes = g.getNodes();
+  if (nodes.empty()) {
+    return res;
+  }
+  auto root = nodes[0];
+  workstack.push(root);
+  visited.insert(root);
+  while (!workstack.empty()) {
+    auto node = workstack.top();
+    res.push_back(node);
+    workstack.pop();
+    for (auto neighbor : g.getNeighbors(node)) {
+      if (visited.count(neighbor) == 0) {
+        workstack.push(neighbor);
+        visited.insert(neighbor);
+      }
+    }
+  }
+  return res;
+}
+
+void dfsPostorderRecursiveWorker2(const Graph &g, nodeId_t node,
+                                  std::vector<nodeId_t> &res,
+                                  std::unordered_set<nodeId_t> &visited) {
+  for (auto neighbor : g.getNeighbors(node)) {
+    if (visited.count(neighbor) == 0) {
+      visited.insert(neighbor);
+      dfsPostorderRecursiveWorker2(g, neighbor, res, visited);
+    }
+  }
+  // Finally insert current node
+  res.push_back(node);
+}
+
+std::vector<nodeId_t> dfsPostorderRecursive2(const Graph &g) {
+  std::vector<nodeId_t> res;
+  std::unordered_set<nodeId_t> visited;
+  auto nodes = g.getNodes();
+  if (nodes.empty()) {
+    return res;
+  }
+  auto node = nodes[0];
+  visited.insert(node);
+  dfsPostorderRecursiveWorker2(g, node, res, visited);
+  return res;
+}
+
+std::vector<nodeId_t> dfsPostorderIterative2(const Graph &g) {
+  std::vector<nodeId_t> res;
+  std::unordered_set<nodeId_t> visited;
+  std::stack<nodeId_t> workstack;
+  auto nodes = g.getNodes();
+  if (nodes.empty()) {
+    return res;
+  }
+  auto node = nodes[0];
+  workstack.push(node);
+  visited.insert(node);
+  while (!workstack.empty()) {
+    auto node = workstack.top();
+    bool should_pop = true;
+    auto neighbors = g.getNeighbors(node);
+
+    // Reverse order to match recursive implementation for ease of verification
+    for (auto it = neighbors.rbegin(); it != neighbors.rend(); ++it) {
+      auto neighbor = *it;
+      if (visited.count(neighbor) == 0) {
+        workstack.push(neighbor);
+        visited.insert(neighbor);
+        should_pop = false;
+      }
+    }
+
+    if (should_pop) {
+      res.push_back(node);
+      workstack.pop();
+    }
+  }
+  return res;
+}
+
 // TODO matrix multiply optimization
 // TODO basic constant folding
 } // namespace ry
