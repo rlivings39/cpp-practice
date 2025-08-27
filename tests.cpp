@@ -81,7 +81,7 @@ TEST(ModernCpp, Forwarding) {
   ASSERT_EQ(fr4.fWasRvalue, false);
 
   // Without forwarding passing an rvalue or lvalue passes lvalue
-  ry::ForwardingRefDetector fr5 = ry::do_not_forward(x);
+  ry::ForwardingRefDetector fr5 = ry::do_not_forward(1);
   ASSERT_EQ(fr5.fWasRvalue, false);
 
   ry::ForwardingRefDetector fr6 = ry::do_not_forward(x);
@@ -216,11 +216,13 @@ struct DerivedV1 : public virtual Base {};
 struct DerivedV2 : virtual public Base {};
 // DerivedNonV has its own instance of x
 struct DerivedNonV : public Base {};
-struct RollUp : public DerivedV1, DerivedV2, DerivedNonV {
+struct DerivedNonV2 : public Base {};
+struct RollUp : public DerivedV1, DerivedV2, DerivedNonV, virtual DerivedNonV2 {
   void incrementXs() {
     DerivedV1::x++;
     DerivedV2::x++;
     DerivedNonV::x++;
+    DerivedNonV2::x++;
   }
 
   auto getXs() {
@@ -242,6 +244,8 @@ TEST(ModernCpp, VirtualInheritance) {
   ASSERT_EQ(r.DerivedV1::x, 2);
   ASSERT_EQ(&r.DerivedV1::x, &r.DerivedV2::x);
   ASSERT_NE(&r.DerivedV1::x, &r.DerivedNonV::x);
+  // Direct virtual inheritance also does not deduplicate things
+  ASSERT_NE(&r.DerivedV1::x, &r.DerivedNonV2::x);
 }
 
 struct rule_of_5 {
