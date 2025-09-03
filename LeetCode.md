@@ -31,7 +31,7 @@ Started with Blind 75
 | 2. Add Two Numbers | Can do a single loop by checking each list for `nullptr` | |
 | 647. Palindromic Substrings | Brute force is each substring w/ 2 pointers. Optimize with DP/caching for each window. Check endpoints, check cache for substring| |
 | 139. Word break | Start from beginning. Check each prefix. Use a cache and string_view for max  efficiency. | |
-
+| 48. Rotate Image | Use pointers for each working row and column. Iterate over shells. | |
 ## Dynamic programming
 
 A problem must have **optimal substructure** and **overlapping sub-problems** for dynamic programming to be relevant.
