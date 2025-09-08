@@ -24,6 +24,8 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
+add_executable(simple-calc simple_calculator.cpp)
+
 add_executable(
   cpp-practice-test
   tests.cpp
