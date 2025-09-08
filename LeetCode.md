@@ -32,6 +32,8 @@ Started with Blind 75
 | 647. Palindromic Substrings | Brute force is each substring w/ 2 pointers. Optimize with DP/caching for each window. Check endpoints, check cache for substring| |
 | 139. Word break | Start from beginning. Check each prefix. Use a cache and string_view for max  efficiency. | |
 | 48. Rotate Image | Use pointers for each working row and column. Iterate over shells. | |
+| 338. Counting Bits | Simple solution is pop count on every number | Look at DP solution with ranges between powers of 2 |
+
 ## Dynamic programming
 
 A problem must have **optimal substructure** and **overlapping sub-problems** for dynamic programming to be relevant.
