@@ -33,6 +33,7 @@ Started with Blind 75
 | 139. Word break | Start from beginning. Check each prefix. Use a cache and string_view for max  efficiency. | |
 | 48. Rotate Image | Use pointers for each working row and column. Iterate over shells. | |
 | 338. Counting Bits | Simple solution is pop count on every number | Look at DP solution with ranges between powers of 2 |
+| 39. Combination Sum | Recursive solution with backtracking. Build up candidate list recursively call yourself with new element added and target updated. | Here is a nice [flowchart](https://algo.monster/flowchart) for guessing an algorithm |
 
 ## Dynamic programming
 
