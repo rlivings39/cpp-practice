@@ -89,3 +89,4 @@ When all subproblems must be solved, a bottom-up solution often has better const
 * [ ] Iterative solutions for tree traversals?
 * [ ] Learn dynamic programming and memoization
 * [ ] Make sure to write your base cases!!!
+* [ ] Make sure to think about recursive solutions. Recursion is legal here!
