@@ -35,6 +35,7 @@ Started with Blind 75
 | 338. Counting Bits | Simple solution is pop count on every number | Look at DP solution with ranges between powers of 2 |
 | 39. Combination Sum | Recursive solution with backtracking. Build up candidate list recursively call yourself with new element added and target updated. | Here is a nice [flowchart](https://algo.monster/flowchart) for guessing an algorithm |
 | 33. Search in Rotated Sorted Array | Do basic binary search. For inverted sub intervals, just recurse and check them since we can't determine containment easily. | |
+| 152. Maximum Product Subarray | For each element compute min and max product seen. Swap if val is negative. Compare against current val. | Actually understand |
 
 ## Dynamic programming
 
