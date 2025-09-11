@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstddef>
 #include <format>
 #include <gtest/gtest.h>
 #include <limits>
@@ -429,4 +430,44 @@ TEST(LeetCode, ThreeSum) {
   std::vector<std::vector<int>> expected = {
       {-10, 5, 5}, {-5, 0, 5}, {-4, 2, 2}, {-3, -2, 5}, {-3, 1, 2}, {-2, 0, 2}};
   EXPECT_EQ(res, expected);
+}
+
+ptrdiff_t bin_search(const std::vector<int> &nums, int target) {
+  if (nums.empty()) {
+    return -1;
+  }
+  ptrdiff_t left{0}, right{static_cast<ptrdiff_t>(nums.size() - 1)};
+  while (left < right) {
+    ptrdiff_t mid = (left + right) / 2;
+    auto left_val = nums[left];
+    auto right_val = nums[right];
+    auto mid_val = nums[mid];
+    if (target == mid_val) {
+      return mid;
+    } else if (target <= mid_val) {
+      right = mid - 1;
+    } else {
+      left = mid + 1;
+    }
+  }
+  return nums[left] == target ? left : -1;
+}
+
+TEST(LeetCode, BinarySearch) {
+  std::vector<int> nums{};
+  EXPECT_EQ(bin_search(nums, 1), -1);
+  nums = {1};
+  auto check = [](auto &nums) {
+    size_t idx{0};
+    for (auto num : nums) {
+      EXPECT_EQ(bin_search(nums, num), idx)
+          << "Failed to find value " << num << " at index " << idx << "\n";
+      ++idx;
+    }
+  };
+  EXPECT_EQ(bin_search(nums, 0), -1);
+  check(nums);
+  nums = {1, 2, 6, 9};
+  EXPECT_EQ(bin_search(nums, 0), -1);
+  check(nums);
 }
