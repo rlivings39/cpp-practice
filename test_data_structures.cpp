@@ -38,3 +38,11 @@ TEST(DataStructures, AlignedAlloc) {
   EXPECT_EQ(reinterpret_cast<std::uintptr_t>(dbl_ptr) % align, 0);
   ry::aligned_free(dbl_ptr);
 }
+
+TEST(DataStructures, Heap) {
+  ry::heap<int> h({1, 2, 3});
+  ASSERT_EQ(h.size(), 3);
+
+  ry::heap<int> h_empty;
+  ASSERT_EQ(h_empty.size(), 0);
+}

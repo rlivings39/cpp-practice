@@ -1,8 +1,11 @@
 #pragma once
 
 #include <cstdint>
+#include <initializer_list>
 #include <memory>
+#include <stdexcept>
 #include <type_traits>
+#include <vector>
 
 namespace ry {
 template <typename T> struct list_node;
@@ -155,4 +158,57 @@ inline void aligned_free(void *ptr) {
   std::free(reinterpret_cast<void **>(ptr)[-1]);
 }
 
+struct bad_heap_access : std::runtime_error {
+  bad_heap_access(std::string msg) : std::runtime_error(msg) {}
+};
+template <typename T> struct heap {
+  heap() {}
+  heap(std::vector<T> &&data) : fData(std::move(data)) {
+    heapify();
+  }
+
+  using size_type = std::size_t;
+  size_type size() const {
+    return fData.size();
+  }
+
+  const T &peek() const {
+    check_not_empty();
+    return fData[0];
+  }
+  T &peek() {
+    check_not_empty();
+    return fData[0];
+  }
+
+  void insert(T val) {
+    this->fData.push_back(val);
+    // TODO fix heap
+  };
+
+  T pop() {
+    check_not_empty();
+    auto res = this->fData[0];
+    this->fData[0] = this->fData.back();
+    this->fData.pop_back();
+    // TODO fix heap
+    return res;
+  };
+
+  void delete_extremum() {
+    (void)pop();
+  }
+
+private:
+  void check_not_empty() const {
+    if (this->fData.empty()) {
+      throw bad_heap_access("Attempted to access an element of an empty heap");
+    }
+  }
+
+  void heapify() {
+    // TODO
+  }
+  std::vector<T> fData;
+};
 } // namespace ry
