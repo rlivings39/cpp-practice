@@ -1,6 +1,8 @@
 #pragma once
 
+#include <cstdint>
 #include <memory>
+#include <type_traits>
 
 namespace ry {
 template <typename T> struct list_node;
@@ -104,4 +106,53 @@ template <typename T> std::ostream &operator<<(std::ostream &os, list<T> l) {
 
   return os;
 }
+
+/**
+ * @brief Return a pointer n_bytes of memory aligned to at least n_align bytes
+ *
+ * @tparam T
+ * @param n_align - Number of bytes for alignment
+ * @param n_bytes - Number of bytes to allocate
+ * @return T* - Aligned pointer or nullptr on failure
+ */
+template <typename T>
+T *aligned_alloc(std::size_t n_align, std::size_t n_bytes) {
+  /* Internally we allocate a block that stores
+    - sizeof(T*) - Original pointer needed to actually deallocate
+    - Padding to satisfy alignment
+    - Object of type T aligned to n_align
+   */
+  // TODO can I shrink this size?
+  // TODO what about alignment of T and void*?
+  std::size_t n_bytes_alloc = n_bytes + n_align - 1 + sizeof(void *);
+  void *base_ptr = std::malloc(n_bytes_alloc);
+  if (base_ptr == nullptr) {
+    return nullptr;
+  }
+  auto base_ptr_val = reinterpret_cast<std::uintptr_t>(base_ptr);
+  auto offset = n_align - (base_ptr_val % n_align);
+  void **obj_ptr = reinterpret_cast<void **>(base_ptr_val + offset);
+  obj_ptr[-1] = base_ptr;
+  return reinterpret_cast<T *>(obj_ptr);
+
+  // Inspiration from
+  // https://stackoverflow.com/questions/38088732/explanation-to-aligned-malloc-implementation
+  // void *p1;  // original block
+  // void **p2; // aligned block
+  // int offset = n_align - 1 + sizeof(void *);
+  // if ((p1 = (void *)malloc(n_bytes + offset)) == NULL) {
+  //   return NULL;
+  // }
+  // p2 = (void **)(((size_t)(p1) + offset) & ~(n_align - 1));
+  // p2[-1] = p1;
+  // return p2;
+}
+
+inline void aligned_free(void *ptr) {
+  if (ptr == nullptr) {
+    return;
+  }
+  std::free(reinterpret_cast<void **>(ptr)[-1]);
+}
+
 } // namespace ry
