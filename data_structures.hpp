@@ -172,10 +172,15 @@ template <typename T> struct heap {
     return fData.size();
   }
 
+  bool empty() const {
+    return size() == 0;
+  }
+
   const T &peek() const {
     check_not_empty();
     return fData[0];
   }
+
   T &peek() {
     check_not_empty();
     return fData[0];
@@ -183,7 +188,7 @@ template <typename T> struct heap {
 
   void insert(T val) {
     this->fData.push_back(val);
-    // TODO fix heap
+    this->sift_up(size() - 1);
   };
 
   T pop() {
@@ -191,7 +196,6 @@ template <typename T> struct heap {
     auto res = this->fData[0];
     this->fData[0] = this->fData.back();
     this->fData.pop_back();
-    // TODO fix heap
     return res;
   };
 
@@ -206,9 +210,27 @@ private:
     }
   }
 
-  void heapify() {
-    // TODO
+  void sift_up(std::size_t el_idx) {
+    auto parent_idx = (el_idx - 1) / 2;
+    while (el_idx > 0 && this->fData[el_idx] > this->fData[parent_idx]) {
+      std::swap(this->fData[el_idx], this->fData[parent_idx]);
+      el_idx = parent_idx;
+      parent_idx = (el_idx - 1) / 2;
+    }
   }
+
+  void heapify() {
+    if (this->empty()) {
+      return;
+    }
+    auto n = size();
+    for (std::size_t idx{0}; idx < n; ++idx) {
+      // Sift upwards to achieve heap property
+      auto el_idx{n - idx - 1};
+      sift_up(el_idx);
+    }
+  }
+
   std::vector<T> fData;
 };
 } // namespace ry

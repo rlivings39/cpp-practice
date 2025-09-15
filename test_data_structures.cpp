@@ -40,9 +40,22 @@ TEST(DataStructures, AlignedAlloc) {
 }
 
 TEST(DataStructures, Heap) {
-  ry::heap<int> h({1, 2, 3});
-  ASSERT_EQ(h.size(), 3);
-
-  ry::heap<int> h_empty;
-  ASSERT_EQ(h_empty.size(), 0);
+  {
+    ry::heap<int> h({1, -2, -17, 3});
+    ASSERT_EQ(h.size(), 4);
+    ASSERT_EQ(h.peek(), 3);
+    h.insert(3);
+    ASSERT_EQ(h.size(), 5);
+    ASSERT_EQ(h.peek(), 3);
+    h.insert(77);
+    ASSERT_EQ(h.size(), 6);
+    ASSERT_EQ(h.peek(), 77);
+  }
+  {
+    ry::heap<int> h_empty;
+    ASSERT_EQ(h_empty.size(), 0);
+    h_empty.insert(77);
+    ASSERT_EQ(h_empty.size(), 1);
+    ASSERT_EQ(h_empty.peek(), 77);
+  }
 }
