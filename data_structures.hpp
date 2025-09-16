@@ -209,7 +209,6 @@ private:
       throw bad_heap_access("Attempted to access an element of an empty heap");
     }
   }
-
   void sift_up(std::size_t el_idx) {
     auto parent_idx = (el_idx - 1) / 2;
     while (el_idx > 0 && this->fData[el_idx] > this->fData[parent_idx]) {
@@ -219,15 +218,34 @@ private:
     }
   }
 
+  void sift_down(std::size_t el_idx) {
+    while (true) {
+      auto left_idx = 2 * el_idx + 1;
+      auto right_idx = 2 * el_idx + 2;
+      auto max_idx = el_idx;
+      if (left_idx < size() && this->fData[max_idx] < this->fData[left_idx]) {
+        max_idx = left_idx;
+      }
+      if (right_idx < size() && this->fData[max_idx] < this->fData[right_idx]) {
+        max_idx = right_idx;
+      }
+      if (max_idx == el_idx) {
+        return;
+      }
+      std::swap(this->fData[el_idx], this->fData[max_idx]);
+      el_idx = max_idx;
+    }
+  }
+
   void heapify() {
     if (this->empty()) {
       return;
     }
     auto n = size();
-    for (std::size_t idx{0}; idx < n; ++idx) {
-      // Sift upwards to achieve heap property
-      auto el_idx{n - idx - 1};
-      sift_up(el_idx);
+    auto non_leaf = (n - 1) / 2;
+    for (std::size_t el_idx{non_leaf + 1}; el_idx > 0; --el_idx) {
+      // Sift downwards to achieve heap property
+      sift_down(el_idx - 1);
     }
   }
 
