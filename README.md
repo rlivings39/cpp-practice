@@ -201,7 +201,16 @@ Some guarantees
 
 **Memory barriers** are interventions used to impose perceived partial orders over the memory operations on either side of the barrier. They come in a few flavors
 
-*
+* **Write or store memory barriers** guarantees that all store operations specified before the barrier appear to happen before all the stores after the barrier with respect to other components of the system.
+
+    A write barrier is a partial order only on stores. They are usually paired with read or address-dependency barriers. See "SMP barrier pairing"
+* **Address-dependency barriers** (historical)
+* **Read/load memory barriers** is an address-dependency barrier plus a guarantee that all loads specified before the barrier appear to happen before all the loads specified after the barrier. They are usually paired with write barriers. See "SMP barrier pairing".
+* **General memory barriers** guarantees that both loads and stores are ordered as if both a read barrier and a write barrier were present.
+* **Acquire operations** act as a one-way permeable barrier. They guarantee that all operations after the `acquire` appear to happen after the acquire. Memory operations that occur before an acquire may appear to occur after the acquire. These include `lock, smp_load_acquire, smp_cond_load_acquire`. They are usually paired with a `release` operation.
+* **Release operations** act as a one-way permeable barrier guaranteeing that all memory operations before the `release` appear to happen before the `release` operation. They include `unlock, smp_store_release`. Memory operations occurring after a `release` may appear to happen before it completes.
+
+The use of `acquire` and `release` generally precludes the need for other barriers. A `release + acquire` pair is not a full memory barrier as they are only one-way barriers. Operations before the acquire may happen after it and operations after the release may happen before it. Namely, operations outside of the critical region may enter the critical region but none in the critical region may move outside.
 
 ## learncpp.com review
 
