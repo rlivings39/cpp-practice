@@ -94,6 +94,8 @@ std::condition_variable_any
 std::cv_status
 std::notify_all_at_thread_exit
 ```
+### thread
+
 ### mutexes and locks
 
 `std::mutex` is a synchronization primitive to protect shared data from simultaneous access from multiple threads. It is non-recursive (i.e. a thread cannot acquire an already owned mutex such as with `std::recursive_mutex`).
@@ -163,6 +165,12 @@ A **spurious wake up** happens when a thread waiting on a condition variable wak
 Because of this, threads must verify the condition upon waking from waiting for a condition variable.
 
 In C++ `std::condition_variable::wait, wait_for, wait_until` all accept predicates which allow ignoring spurious wake ups.
+
+### atomic
+
+### Memory order, fences, etc.
+
+Include x64 basic info
 
 ## learncpp.com review
 
