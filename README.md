@@ -61,6 +61,109 @@ General standard version references
 * https://en.cppreference.com/w/cpp/17
 * https://en.cppreference.com/w/cpp/20
 
+## C++ parallelism
+
+https://stackoverflow.com/questions/3513045/conditional-variable-vs-semaphore
+
+C++11 added [threading primitives](https://en.cppreference.com/w/cpp/atomic.html) including
+
+```c++
+#include <thread>
+std::thread
+std::this_thread::yield, get_id, sleep_for, sleep_until
+#include <mutex>
+std::mutex
+std::lock_guard
+std::unique_lock
+std::lock
+std::scoped_lock // c++17
+#include <atomic>
+std::atomic
+// Operations
+std::atomic_is_lock_free
+std::atomic_load, atomic_store, atomic_exchange
+std::atomic_fetch*
+std::atomic_flag* // atomic boolean and operations
+std::memory_order
+std::kill_dependency
+std::atomic_thread_fence
+std::atomic_signal_fence
+#include <condition_variable>
+std::condition_variable
+std::condition_variable_any
+std::cv_status
+std::notify_all_at_thread_exit
+```
+### mutexes and locks
+
+`std::mutex` is a synchronization primitive to protect shared data from simultaneous access from multiple threads. It is non-recursive (i.e. a thread cannot acquire an already owned mutex such as with `std::recursive_mutex`).
+
+* Calling threads **own** a mutex after successfully calling `lock` or `try_lock` until `unlock` is called.
+* When a thread owns a lock all other threads will either block on `lock` or receive `false` for `try_lock`.
+* Calling threads are not allowed to own the mutex when calling `lock, try_lock`. See `recursive_mutex` if that is needed.
+
+Typically one does not call `lock, try_lock, unlock` directly on a mutex and instead uses an RAII wrapper like `lock_guard, unique_lock, scoped_lock (C++ 17)`.
+
+#### lock_guard
+
+`std::lock_guard` is the simplest RAII mutex ownership wrapper. When constructed with just a mutex, it acquires the lock on construction and releases on destruction.
+
+When constructed with `std::lock_guard lock{m, std::adopt_lock};` on an already locked `m` it acquires ownership without locking and calls `m.unlock()` upon destruction. This is useful for cases when `std::lock` has been used to lock multiple mutexes at once to avoid deadlock. In C++17 using `std::scoped_lock` is preferable.
+
+#### unique_lock
+
+`std::unique_lock` is a mutex ownership wrapper providing more flexibility than `std::lock_guard`. It allows deferred locking, time-constrained locking attempts, recursive locking, transfer of ownership, and use with condition variables.
+
+The constructor accepts a mutex and optionally one of `std::defer_lock, std::try_to_lock, std::adopt_lock` to determine locking behavior. It can also accept a timeout duration or timeout `time_point` to determine when to give up on locking as with `try_lock_for, try_lock_until`.
+
+`std::unique_lock` also provides operations like `lock, try_lock, try_lock_for, try_lock_until, unlock, swap, release` and observes like `mutex, owns_lock, operator bool`.
+
+#### scoped_lock C++17
+
+`std::scoped_lock` is very similar to `std::lock_guard` except that it allows taking ownership of 0 to N mutexes. If more than 1 mutex is passed, a deadlock avoidance algorithm like `std::lock(m1,m2,m3)` is used.
+
+Using `scoped_lock lock{m1,m2,m3};` is shorter than the equivalents with `lock_guard, unique_lock`:
+
+```c++
+#include <mutex>
+std::mutex m1;
+std::mutex m2;
+{
+    std::lock(m1,m2);
+    std::lock_guard<std::mutex> lock1{m1, std::adopt_lock};
+    std::lock_guard<std::mutex> lock2{m2, std::adopt_lock};
+}
+{
+    std::unique_lock<std::mutex> lock1{m1, std::defer_lock};
+    std::unique_lock<std::mutex> lock2{m2, std::defer_lock};
+    std::lock(lock1, lock2);
+}
+```
+
+### condition_variable
+
+`std::condition_variable` is a synchronization construct used with a `std::mutex` to block one or more threads until another thread modifies a shared variable (the **condition**) and **notifies** the `condition_variable`.
+
+The modifying thread will
+
+1. Acquire the `std::mutex`, usually via `std::lock_guard`
+2. Modify the variable with lock ownership
+3. Call `notify_one` or `notify_all` on the `std::condition_variable`. The lock may be released before this.
+
+Threads waiting on the condition variable must
+
+1. Acquire a `std::unique_lock<std::mutex>` on the mutex protecting the shared variable
+2. Do one of the following
+    1. Check the condition in case it was already modified
+    2. Call `wait, wait_for, wait_until` on the `condition_variable`. This releases the mutex and suspends the thread until later notification, a timeout expires, or a spurious wake up happens, then acquires the mutex before returning control
+    3. Check the condition and resume waiting if not satisfied
+
+A **spurious wake up** happens when a thread waiting on a condition variable wakes up and finds that the condition is still unsatisfied. This can happen when between the time that the condition variable was signaled and the thread wakes up another thread already woke up and invalidated the condition. So there is a race condition when multiple threads wait on a single condition variable. The first thread to run wins and the rest see a spurious wake up.
+
+Because of this, threads must verify the condition upon waking from waiting for a condition variable.
+
+In C++ `std::condition_variable::wait, wait_for, wait_until` all accept predicates which allow ignoring spurious wake ups.
+
 ## learncpp.com review
 
 ### Initialization
