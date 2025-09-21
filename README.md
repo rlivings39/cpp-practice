@@ -96,6 +96,14 @@ std::notify_all_at_thread_exit
 ```
 ### thread
 
+A thread object represents a single thread of execution and begin execution upon creation. If a thread terminates by throwing, `std::terminate` is called.
+
+`std::promise` can be used to return a value or exception to the caller or shared state can be modified.
+
+`std::thread` objects may be in a state that does not represent any thread, like after `join, detatch`, default construction, or move from.
+
+The have operations `join, detach, swap` and observers `joinable, get_id, native_handle`. `std::thread::hardware_concurrency` returns the number of concurrent threads supported by the hardware.
+
 ### mutexes and locks
 
 `std::mutex` is a synchronization primitive to protect shared data from simultaneous access from multiple threads. It is non-recursive (i.e. a thread cannot acquire an already owned mutex such as with `std::recursive_mutex`).
@@ -105,6 +113,8 @@ std::notify_all_at_thread_exit
 * Calling threads are not allowed to own the mutex when calling `lock, try_lock`. See `recursive_mutex` if that is needed.
 
 Typically one does not call `lock, try_lock, unlock` directly on a mutex and instead uses an RAII wrapper like `lock_guard, unique_lock, scoped_lock (C++ 17)`.
+
+`std::timed_mutex, timed_recursive_mutex` also have operations `try_lock_for, try_lock_until` for locking with timeouts.
 
 #### lock_guard
 
@@ -166,11 +176,32 @@ Because of this, threads must verify the condition upon waking from waiting for 
 
 In C++ `std::condition_variable::wait, wait_for, wait_until` all accept predicates which allow ignoring spurious wake ups.
 
+https://en.cppreference.com/w/cpp/thread/condition_variable/wait_for.html seems to avoid mentioning what happens when a timeout occurs, doesn't mention what exceptions arise, and the example doesn't use `wait_for`. Same for the `wait_until` page.
+
 ### atomic
+
+
 
 ### Memory order, fences, etc.
 
 Include x64 basic info
+
+https://www.kernel.org/doc/Documentation/memory-barriers.txt is a nice resource.
+
+In general, memory loads/stores can happen in any old order on a cpu and different cpus may disagree on the order in which they happen.
+
+Some guarantees
+
+* On a given cpu dependent memory accesses are issued in order
+* Overlapping loads and stores on a single cpu will appear to be ordered
+* It **must not** be assumed that the compiler does what you want
+* It **must not** be assumed that independent loads and stores will be issued in the order given
+* It **must** be assumed that overlapping memory accesses may be merged or discarded ?? This seems to violate the second point?
+* All bets are off for bitfields which are often managed by read-modify-write sequences. All fields must be protected by a single lock.
+
+**Memory barriers** are interventions used to impose perceived partial orders over the memory operations on either side of the barrier. They come in a few flavors
+
+*
 
 ## learncpp.com review
 
