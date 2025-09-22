@@ -212,6 +212,10 @@ Some guarantees
 
 The use of `acquire` and `release` generally precludes the need for other barriers. A `release + acquire` pair is not a full memory barrier as they are only one-way barriers. Operations before the acquire may happen after it and operations after the release may happen before it. Namely, operations outside of the critical region may enter the critical region but none in the critical region may move outside.
 
+## volatile
+
+Every access made through a volatile object is treated as a visible side effect. Within a single thread, volatile accesses cannot be optimized out or reordered with another visible side effect sequenced before or after the volatile access. This makes volatiles useful for signal handlers and single-threaded cases where devices may alter memory. Volatiles are not suitable to communicate with other threads.
+
 ## learncpp.com review
 
 ### Initialization
