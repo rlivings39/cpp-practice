@@ -16,7 +16,7 @@ Overall guidelines
 4. Design for testability
 5. Design for extension
 
-### The importance of software design
+### Guideline 1: The importance of software design
 
 The structure of a project that impacts its ability to last long-term. Using the newest and best features doesn't really matter.
 
@@ -24,7 +24,61 @@ Change is one of the biggest constants in development. Having chains of poor dep
 
 Some dependencies are necessary. However, many others are artificial, unintentional, and harmful. Managing those dependencies is essential to keep a project nimble over many years.
 
+Software development can be thought of as having 3 levels
+
+* Architecture - Architecture patterns (client-server, microservices), large-scale structure, etc.
+* Design - Design patterns (visitor, strategy, observer), function design, extensibility, maintainability, testability, etc.
+* Implementation details - Implementation patterns, language-specific constructs
+
+Architecture tends to involve the big decisions, the ones that are hard to change and that you want to get right early on. You address how to ensure components are independently changeable and how they communicate.
+
+#### Guideline 1 Takeaways
+
+* Treat design as essential
+* Focus less on language details and more on design
+* Avoid unnecessary coupling and dependencies for more agility
+* Think of design as the art of managing dependencies and abstractions
+
+### Guideline 2: Design for Change
+
+The ability to change easily is essential to good software and differentiates **soft**ware from **hard**ware.
+
+Separating concerns into small, well-named, tested, comprehensible pieces is a tried-and-true method for simplifying dependencies. It is also known as cohesion, orthogonality, and single responsibility principle (SRP in SOLID).
+
+Try to separate things which don't strictly belong together so changes can be isolated.
+
+The book presents an example of a document class with 2 pure virtual methods `exportToJSON(), serialize(ByteStream&, ...)` as an example of where hidden dependencies creep in.
+
+* Changes in the JSON library can cause all derived classed to reimplement their JSON export and may be reflected in the `exportToJSON()` method signature
+* Similar for `serialize()` wrt the implementation and `ByteStream`
+* A shared enum enumerating all document types requires a centralized change
+
+These dependencies can then bubble up to clients of `Document`.
+
+To rework this design, we can look at **variation points**, i.e. places where we expect changes, and separate those out into isolated, wrapped components to protect dependencies on these from leaking out.
+
+In this case we have core components `JSONLibrary, Document, ByteStream` and malleable components `JSONSerializer, User (Document client), Serializer`
+
+Highly related to SRP is DRY (don't repeat yourself).
+
+Avoid premature separation of concerns until you know what kind of change to expect. If you don't know how things might change, wait and then separate. Apply the "you aren't gonna need it" (YAGNI) principle.
+#### Guideline 2 Takeaways
+
+* Expect change
+* Design for easy change
+* Separate unrelated things to avoid coupling
+* Coupling increases the scope of changes
+* Apply SRP and DRY
+* Avoid premature abstraction if upcoming change is unclear
+
 ## Other references mentioned
 
 * *Large Scale C++ Software Design* by John Lakos
 * Gang of Four book
+
+## Design and architecture patterns mentioned
+
+* Non-virtual interface (NVI)
+* Pimpl
+* Template method design pattern
+* Bridge design pattern
