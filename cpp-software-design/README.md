@@ -61,7 +61,8 @@ In this case we have core components `JSONLibrary, Document, ByteStream` and mal
 
 Highly related to SRP is DRY (don't repeat yourself).
 
-Avoid premature separation of concerns until you know what kind of change to expect. If you don't know how things might change, wait and then separate. Apply the "you aren't gonna need it" (YAGNI) principle.
+Avoid premature separation of concerns until you know what kind of change to expect. If you don't know how things might change, wait and then separate. Apply the "You aren't gonna need it" (YAGNI) principle.
+
 #### Guideline 2 Takeaways
 
 * Expect change
@@ -70,6 +71,22 @@ Avoid premature separation of concerns until you know what kind of change to exp
 * Coupling increases the scope of changes
 * Apply SRP and DRY
 * Avoid premature abstraction if upcoming change is unclear
+
+### Guideline 3: Separate interfaces to avoid unnecessary coupling
+
+The **interface segregation principle** (ISP), the I in SOLID, says clients shouldn't be forced to depend on things they don't use. That would argue for separating 2 interfaces from `Document`, say `JSONExportable` and `Serializable`.
+
+Limiting requirements on template parameters also helps with ISP.
+
+#### Guideline 3 takeaways
+
+* Coupling also impacts interfaces
+* Use the interface segregation principle to separate concerns in interfaces
+* ISP is a special case of the SRP which applies to inheritance hierarchies and template parameters
+
+### Guideline 4: Design for testability
+
+
 
 ## Other references mentioned
 
