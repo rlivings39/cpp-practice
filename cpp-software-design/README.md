@@ -149,6 +149,26 @@ Apply the YAGNI principle to extension as well.
 * Apply "you ain't gonna need it"
 * Identify customization and extension points and ensure they're easy to use
 
+## The art of building abstractions
+
+Abstractions help to deal with complexity.
+
+### Guideline 6: Adhere to the expected behavior of abstractions
+
+Maintain the Liskov substitution principle
+
+> Let `p(x)` be a property provable about objects `x` of type `T`. Then `p(y)` should be true for objects `y` of type `S` where `S` is a subtype of `T`.
+
+This formalizes the is-a relationship that we usually desire for inheritance.
+
+Follow-up implications
+
+* Preconditions can't be strengthened in a subtype. Namely, subtypes can't expect more than what the super type expresses
+* Post conditions can't be weakened in a subtype
+* Function return types in a subtype must be **covariant**. Member functions of the subtype can return subtypes of the return type of the super type method. However, the subtype cannot return a super type of the type returned by the method in the super type.
+* Function parameters in a subtype must be **contravariant**. Subtype methods can accept a super type of the function parameter in the corresponding member function of the super type. This does not have direct C++ support.
+* Invariants of the super type must be preserved in a subtype. Any expectations on the state of the super type must be valid before and after calls to any member function.
+
 ## Other references mentioned
 
 * *Large Scale C++ Software Design* by John Lakos
