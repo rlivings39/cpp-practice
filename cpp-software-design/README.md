@@ -169,6 +169,13 @@ Follow-up implications
 * Function parameters in a subtype must be **contravariant**. Subtype methods can accept a super type of the function parameter in the corresponding member function of the super type. This does not have direct C++ support.
 * Invariants of the super type must be preserved in a subtype. Any expectations on the state of the super type must be valid before and after calls to any member function.
 
+#### Guideline 6 takeaways
+
+* Abstractions represent a set of requirements and expectations
+* Follow the Liskov Substitution Principle (LSP) to ensure expected behavior of abstractions
+* Ensure that derived classes adhere to the expected base class behavior
+* Communication abstraction expectations
+
 ## Other references mentioned
 
 * *Large Scale C++ Software Design* by John Lakos
