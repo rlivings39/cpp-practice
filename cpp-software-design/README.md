@@ -183,7 +183,9 @@ The LSP also applies to templates, compile-time polymorphism, and concepts.
 
 ### Guideline 8: Understand the semantic requirements of overload sets
 
+Overloads and overload sets are another form of compile-time abstraction. You can add a free function overload for any type without having to modify the types. Using unqualified calls via `using std::begin; begin(thing);` and ADL lets your code choose the right overload based on the input type.
 
+Free functions enable separation of concerns and DRY very well.
 
 ## Other references mentioned
 
