@@ -175,6 +175,15 @@ Follow-up implications
 * Follow the Liskov Substitution Principle (LSP) to ensure expected behavior of abstractions
 * Ensure that derived classes adhere to the expected base class behavior
 * Communication abstraction expectations
+* Apply these to static polymorphism and template parameters too
+
+### Guideline 7: Understand the similarities between base classes and concepts
+
+The LSP also applies to templates, compile-time polymorphism, and concepts.
+
+### Guideline 8: Understand the semantic requirements of overload sets
+
+
 
 ## Other references mentioned
 
