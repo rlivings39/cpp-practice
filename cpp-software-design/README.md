@@ -86,7 +86,68 @@ Limiting requirements on template parameters also helps with ISP.
 
 ### Guideline 4: Design for testability
 
+Enough said, tests are essential.
 
+The book gives the example of a class with a private method we'd like to test. Ideas
+
+* Test via other public method. Introduces dependency that can be broken.
+* Make the test a friend. Introduces extra coupling as now production code knows about tests.
+* Make the method protected. Inheritance is rarely the answer and this case abuses it just for visibility.
+
+The book suggests separating the method into a free function or a separate class with a public method. That class is then held privately in our original structure. Application of SRP.
+
+Such a separation also improves encapsulation by means of restricting what the method can touch in the original containing class.
+
+#### Guideline 4 takeaways
+
+* Tests are your protection against breaking things
+* Tests and testability are essential
+* Separate concerns for testability
+* `private` methods needing testing are misplaced. Prefer nonmember non-friend functions to member functions
+
+### Guideline 5: Design for extension
+
+Extensibility should be a primary goal of designs. In the document example
+
+```cpp
+class Document {
+  // All documents must implement a serialize
+  virtual serialize(ByteStream&) = 0;
+};
+
+enum class DocumentType {
+  pdf,
+  word,
+  xml, // Newly adding this
+};
+```
+
+we see issues where adding a new type, say `xml`, causes all other document types to recompile in the best case. In the worst case, they may need to change their implementations. We ideally should be able to add a new type without touching any other document types.
+
+This violates the open-closed principle as the `serialize` implementations are artificially coupled. Separating into 3 tiers
+
+* `Document`
+* `PDF, Word, XML`
+* `JSON, Serialization`
+
+where lower levels can depend on higher levels, we avoid these issues and can add new document types without changing other document types or the base document.
+
+SRP can lead to improved extensibility.
+
+Compile-time customization in C++ is done in a few primary ways
+
+* Using ADL like `std::swap`
+* Using template parameters and concepts like `std::find`
+* Using template specialization like `std::hash`
+
+Apply the YAGNI principle to extension as well.
+
+#### Guideline 5 takeaways
+
+* Favor designs which allow for easy extension and the open-closed principle
+* Use base classes, templates, function overloading, template specialization, and ADL to allow for extension
+* Apply "you ain't gonna need it"
+* Identify customization and extension points and ensure they're easy to use
 
 ## Other references mentioned
 
@@ -99,3 +160,7 @@ Limiting requirements on template parameters also helps with ISP.
 * Pimpl
 * Template method design pattern
 * Bridge design pattern
+
+## Next
+
+https://learning-oreilly-com.ezproxy.bpl.org/library/view/c-software-design/9781098113155/ch02.html
