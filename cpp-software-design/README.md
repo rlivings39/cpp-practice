@@ -187,6 +187,14 @@ Overloads and overload sets are another form of compile-time abstraction. You ca
 
 Free functions enable separation of concerns and DRY very well.
 
+Overloaded operations if and only if they're roughly equivalent. Using overloading for things which aren't very related can cause much confusion.
+
+#### Guideline 8 takeaways
+
+* Function overloading is compile-time abstraction
+* Functions in an overload set all have expectations
+* Pay attention to existing names and conventions
+
 ## Other references mentioned
 
 * *Large Scale C++ Software Design* by John Lakos
