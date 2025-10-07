@@ -195,6 +195,31 @@ Overloaded operations if and only if they're roughly equivalent. Using overloadi
 * Functions in an overload set all have expectations
 * Pay attention to existing names and conventions
 
+### Guideline 9: Pay attention to the ownership of abstractions
+
+The dependency inversion principle (DIP) says that source dependencies should rely on abstractions, not concrete details, types, or implementations.
+
+High-abstraction modules should not depend on concrete modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions.
+
+The book gives a very unsatisfying example that relies on a technicality of "changing where the high-abstraction layer is" to recategorize things. It does defend this by saying that you could move headers from the low-level to the high level and thereby change ownership.
+
+The book makes the point that not only must we invert dependencies by introducing an abstraction (e.g. an interface or a concept, but we must also ensure that the abstraction is owned by the high-abstraction (high-level, stable) part of the code. For example
+
+* Core component - high-level, stable
+* Abstraction used by core (e.g. a plugin interface) - should be high-level, stable, owned by high-abstraction layer
+* Implementation of abstraction (e.g. a specific plugin) - should be low-level (high-detail), not in the core layer but in the detail layer
+
+For inheritance and interfaces, this ownership must be manually managed. For templates, ownership is handled by default as the template definition provides and thereby owns the abstractions.
+
+#### Guideline 9 takeaways
+
+* Implementation details should depend on high-level abstractions
+* Use the dependency inversion principle and ensure that abstractions are owned by the high level architecture components
+
+### Guideline 10: Create architectural documents
+
+
+
 ## Other references mentioned
 
 * *Large Scale C++ Software Design* by John Lakos
