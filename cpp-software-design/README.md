@@ -218,7 +218,11 @@ For inheritance and interfaces, this ownership must be manually managed. For tem
 
 ### Guideline 10: Create architectural documents
 
+Architectural documents are good and ensure that everyone has a shared understanding of the system design. Such a document provides a global vision of the codebase.
 
+Such documents can also contain ideas, visions, thought processes, and decisions. Only the high-level items and interactions should be documented. Low-level implementation details which change frequently don't belong in such a document.
+
+Just get started making one.
 
 ## Other references mentioned
 
