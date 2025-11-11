@@ -248,6 +248,8 @@ Design patterns are not limited to OOP or runtime polymorphism. For example, `st
 
 ### Guideline 14: Use design pattern's name to communicate intent
 
+## Chapter 4: The visitor design pattern
+
 ## Other references mentioned
 
 * *Large Scale C++ Software Design* by John Lakos
