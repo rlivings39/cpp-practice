@@ -250,6 +250,9 @@ Design patterns are not limited to OOP or runtime polymorphism. For example, `st
 
 ## Chapter 4: The visitor design pattern
 
+
+### Guideline 15: Design for the additions of types and operations
+
 ## Other references mentioned
 
 * *Large Scale C++ Software Design* by John Lakos
