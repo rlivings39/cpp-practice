@@ -224,6 +224,30 @@ Such documents can also contain ideas, visions, thought processes, and decisions
 
 Just get started making one.
 
+## Chapter 3. The purpose of design patterns
+
+### Guideline 11: Understand the purpose of design patterns
+
+Design patterns have a name, carry intents, introduce abstractions, and are proven.
+
+Having names allows us to communicate efficiently without having to describe ideas in excruciating detail.
+
+The name of the pattern expresses the intent concisely. The intent describes the proposed structure, how dependencies are managed, and how we expect the system to evolve.
+
+Abstractions introduced by patters allow for decoupling and also introduce customization points.
+
+### Guideline 12: Beware of design pattern misconceptions
+
+Design patterns are **not** the goal. They are tools used to achieve goals and should reduce complexity rather than introduce it.
+
+Design patterns are not implementation details. They provide intent and concepts which can be implemented in any number of ways. The book shows an inheritance-based strategy and a template-based strategy.
+
+Design patterns are not limited to OOP or runtime polymorphism. For example, `std::accumulate` accepts an optional reducer function that allows modifying the algorithm externally.
+
+### Guideline 13: Design patterns are everywhere
+
+### Guideline 14: Use design pattern's name to communicate intent
+
 ## Other references mentioned
 
 * *Large Scale C++ Software Design* by John Lakos
